@@ -1,29 +1,37 @@
 import { useState } from 'react';
 import cs from 'classnames';
-import { Button, Switch, Tag, Card, Descriptions, Typography, Dropdown, Skeleton } from '@douyinfe/semi-ui';
 import {
-  IconStar,
-  IconLikeThumb,
-  IconSun,
-  IconEmoji,
-  IconEdit,
-  IconTickCircle,
-  IconAlertCircle,
-  IconMore,
-} from '@douyinfe/semi-icons';
+  Button,
+  Card,
+  Descriptions,
+  Dropdown,
+  Skeleton,
+  Switch,
+  Tag,
+  Typography,
+} from 'tdesign-react';
+import {
+  CheckCircleIcon,
+  EditIcon,
+  ErrorCircleIcon,
+  MoreIcon,
+  SmileIcon,
+  StarIcon,
+  SunnyIcon,
+  ThumbUpIcon,
+} from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
+import useMediaQuery from '~/hooks/useMediaQuery';
 import PermissionWrapper from '~/components/PermissionWrapper';
 import type { CardBlockProps } from './types';
 import styles from './style.module.styl';
 
-const { Paragraph } = Typography;
-
 const IconList = [
-  { key: 'star', Comp: IconStar },
-  { key: 'thumbUp', Comp: IconLikeThumb },
-  { key: 'sun', Comp: IconSun },
-  { key: 'smile', Comp: IconEmoji },
-  { key: 'pen', Comp: IconEdit },
+  { key: 'star', Comp: StarIcon },
+  { key: 'thumbUp', Comp: ThumbUpIcon },
+  { key: 'sun', Comp: SunnyIcon },
+  { key: 'smile', Comp: SmileIcon },
+  { key: 'pen', Comp: EditIcon },
 ].map(({ key, Comp }) => <Comp key={key} />);
 
 const EMPTY_CARD: CardBlockProps['card'] = {};
@@ -34,7 +42,7 @@ export default function CardBlock({
   loading: loadingProp,
 }: CardBlockProps) {
   const { t } = useTranslation();
-  const [visible, setVisible] = useState(false);
+  const wide = useMediaQuery('(min-width: 900px)');
   const [actionLoading, setActionLoading] = useState(false);
   const [statusOverride, setStatusOverride] = useState<0 | 1 | 2 | undefined>(undefined);
 
@@ -62,12 +70,14 @@ export default function CardBlock({
       return (
         <>
           <PermissionWrapper per={[{ resource: /^menu.list.*/, actions: ['read'] }]}>
-            <Button type="primary" theme="solid" className="!ml-[12px]" loading={loading}>
+            <Button theme="primary" className="!ml-[8px]" loading={loading}>
               {t('cardList.options.qualityInspection')}
             </Button>
           </PermissionWrapper>
           <PermissionWrapper per={[{ resource: /^menu.list.*/, actions: ['write'] }]}>
-            <Button loading={loading}>{t('cardList.options.remove')}</Button>
+            <Button theme="default" variant="outline" loading={loading}>
+              {t('cardList.options.remove')}
+            </Button>
           </PermissionWrapper>
         </>
       );
@@ -85,13 +95,13 @@ export default function CardBlock({
       );
     }
 
-    return <Switch checked={!!status} loading={loading} onChange={changeStatus} />;
+    return <Switch value={!!status} loading={loading} onChange={changeStatus} />;
   };
 
   const getStatus = () => {
     if (type === 'rules' && status) {
       return (
-        <Tag color="green" prefixIcon={<IconTickCircle />} className="ml-[12px]">
+        <Tag theme="success" icon={<CheckCircleIcon />} className="!ml-[8px]">
           {t('cardList.tag.activated')}
         </Tag>
       );
@@ -99,13 +109,13 @@ export default function CardBlock({
     switch (status) {
       case 1:
         return (
-          <Tag color="green" prefixIcon={<IconTickCircle />} className="ml-[12px]">
+          <Tag theme="success" icon={<CheckCircleIcon />} className="!ml-[8px]">
             {t('cardList.tag.opened')}
           </Tag>
         );
       case 2:
         return (
-          <Tag color="red" prefixIcon={<IconAlertCircle />} className="ml-[12px]">
+          <Tag theme="danger" icon={<ErrorCircleIcon />} className="!ml-[8px]">
             {t('cardList.tag.expired')}
           </Tag>
         );
@@ -118,31 +128,29 @@ export default function CardBlock({
     if (loading) {
       return (
         <Skeleton
-          active
+          animation="gradient"
           className={styles['card-block-skeleton']}
-          placeholder={<Skeleton.Paragraph rows={type !== 'quality' ? 3 : 2} />}
+          rowCol={type !== 'quality' ? [1, 1, 1] : [1, 1]}
         />
       );
     }
     if (type !== 'quality') {
-      return <Paragraph>{card.description}</Paragraph>;
+      return <Typography.Paragraph>{card.description}</Typography.Paragraph>;
     }
     return (
-      // Semi Descriptions 用 data（key 对应 label，value 对应内容）
-      // / Semi Descriptions uses `data` (key is the label, value is the content)
       <Descriptions
-        column={2}
-        data={[
-          { key: t('cardList.quality.qualityCount'), value: card.qualityCount },
-          { key: t('cardList.quality.duration'), value: `${card.duration}s` },
-          { key: t('cardList.quality.randomCount'), value: card.randomCount },
+        column={wide ? 2 : 1}
+        tableLayout="auto"
+        labelStyle={{ whiteSpace: 'nowrap' }}
+        items={[
+          { label: t('cardList.quality.qualityCount'), content: card.qualityCount },
+          { label: t('cardList.quality.duration'), content: `${card.duration}s` },
+          { label: t('cardList.quality.randomCount'), content: card.randomCount },
         ]}
       />
     );
   };
 
-  // Semi Card 用 bordered 控制边框。
-  // / Semi Card uses `bordered` to control the border.
   return (
     <Card
       className={cs(styles['card-block'], styles[`${type}-card`])}
@@ -150,31 +158,25 @@ export default function CardBlock({
       title={
         loading ? (
           <Skeleton
-            active
+            animation="gradient"
             className={styles['card-block-skeleton'] + ' w-[120px] h-[24px]'}
-            placeholder={<Skeleton.Paragraph rows={1} />}
+            rowCol={[1]}
           />
         ) : (
           <>
-            <div
-              className={cs(styles.title, {
-                [styles['title-more']]: visible,
-              })}
-            >
+            <div className={cs(styles.title)}>
               {getTitleIcon()}
               {card.title}
               {getStatus()}
               <Dropdown
-                menu={[
-                  { node: 'item', name: t('cardList.dropdown.operation1') },
-                  { node: 'item', name: t('cardList.dropdown.operation2') },
-                ]}
                 trigger="click"
-                visible={visible}
-                onVisibleChange={setVisible}
+                options={[
+                  { content: t('cardList.dropdown.operation1'), value: 'operation1' },
+                  { content: t('cardList.dropdown.operation2'), value: 'operation2' },
+                ]}
               >
                 <div className={styles.more}>
-                  <IconMore />
+                  <MoreIcon />
                 </div>
               </Dropdown>
             </div>

@@ -1,5 +1,5 @@
-import { Card, Typography, Form, Button } from '@douyinfe/semi-ui';
-import { IconSearch } from '@douyinfe/semi-icons';
+import { Button, Card, Form, Input, Textarea, Typography } from 'tdesign-react';
+import { SearchIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useUserStore } from '~/store';
 
@@ -9,33 +9,40 @@ export default function StudioInformation() {
 
   return (
     <Card bordered={false}>
-      <Typography.Title heading={5}>{t('monitor.title.studioInfo')}</Typography.Title>
+      <Typography.Title level="h5">{t('monitor.title.studioInfo')}</Typography.Title>
       <Form layout="vertical">
-        <Form.Input
-          field="studioTitle"
+        <Form.FormItem
+          name="studioTitle"
           label={t('monitor.studioInfo.label.studioTitle')}
-          placeholder={`${user?.name ?? 'admin'}${t('monitor.studioInfo.placeholder.studioTitle')}`}
           rules={[{ required: true }]}
-        />
-        <Form.TextArea
-          field="onlineNotification"
+        >
+          <Input
+            placeholder={`${user?.name ?? 'admin'}${t('monitor.studioInfo.placeholder.studioTitle')}`}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          name="onlineNotification"
           label={t('monitor.studioInfo.label.onlineNotification')}
           rules={[{ required: true }]}
-        />
-        <Form.Input
-          field="studioCategory"
+        >
+          <Textarea />
+        </Form.FormItem>
+        <Form.FormItem
+          name="studioCategory"
           label={t('monitor.studioInfo.label.studioCategory')}
-          suffix={<IconSearch />}
           rules={[{ required: true }]}
-        />
-        <Form.Input
-          field="studioCategory2"
+        >
+          <Input suffix={<SearchIcon />} />
+        </Form.FormItem>
+        <Form.FormItem
+          name="studioCategory2"
           label={t('monitor.studioInfo.label.studioCategory')}
-          suffix={<IconSearch />}
           rules={[{ required: true }]}
-        />
+        >
+          <Input suffix={<SearchIcon />} />
+        </Form.FormItem>
       </Form>
-      <Button type="primary" theme="solid">{t('monitor.chat.update')}</Button>
+      <Button theme="primary">{t('monitor.chat.update')}</Button>
     </Card>
   );
 }

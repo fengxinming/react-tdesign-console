@@ -1,19 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { Card, Skeleton, Tag, Typography } from '@douyinfe/semi-ui';
+import { Card, Skeleton, Tag, Typography } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.styl';
 import { fetchAnnouncement, dashboardKeys } from '~/api/dashboard';
 
-function getTagColor(type: string) {
+function getTagTheme(type: string) {
   switch (type) {
     case 'activity':
-      return 'orange';
+      return 'warning';
     case 'info':
-      return 'cyan';
+      return 'primary';
     case 'notice':
-      return 'blue';
+      return 'primary';
     default:
-      return 'blue';
+      return 'primary';
   }
 }
 
@@ -29,20 +29,14 @@ export default function Announcement() {
   return (
     <Card bordered={false}>
       <div className="flex justify-between">
-        <Typography.Title heading={5}>{t('workplace.announcement')}</Typography.Title>
-        <Typography.Text link>{t('workplace.seeMore')}</Typography.Text>
+        <Typography.Title level="h5">{t('workplace.announcement')}</Typography.Title>
+        <Typography.Text theme="primary">{t('workplace.seeMore')}</Typography.Text>
       </div>
-      <Skeleton
-        loading={loading}
-        active
-        placeholder={<Skeleton.Paragraph rows={5} style={{ width: '100%' }} />}
-      >
+      <Skeleton loading={loading} animation="gradient" rowCol={[1, 1, 1, 1, 1]}>
         <div>
           {data.map((d) => (
             <div key={d.key} className={styles['announcement-item']}>
-              <Tag color={getTagColor(d.type)}>
-                {t(`workplace.${d.type}`)}
-              </Tag>
+              <Tag theme={getTagTheme(d.type)}>{t(`workplace.${d.type}`)}</Tag>
               <span className={styles['announcement-text']}>{d.content}</span>
             </div>
           ))}

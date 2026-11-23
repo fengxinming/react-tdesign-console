@@ -126,7 +126,7 @@ export const useSettingsStore = create<SettingsState>()(
       toggleDark: () => set((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' })),
     }),
     {
-      name: 'react-semi-console-settings',
+      name: 'react-tdesign-console-settings',
       // 持久化不在模块加载时自动还原，统一由 app/main.tsx 在挂载前一次性 rehydrate，
       // 保证主题/语言等 DOM 副作用在首屏渲染前就绪。
       skipHydration: true,
@@ -140,12 +140,12 @@ export const useSettingsStore = create<SettingsState>()(
   ),
 );
 useSettingsStore.subscribe(({ theme, colorWeak, themeColor, lang }, prevState) => {
-  // 明暗模式：Semi 靠 body[theme-mode='dark'] 切换两套色盘，浮层自动跟随。
+  // 明暗模式：TDesign 靠 html[theme-mode='dark'] 切换两套色盘，浮层自动跟随。
   if (theme !== prevState.theme) {
     setTheme(theme);
   }
 
-  // 主题色：写入 body 的 --semi-color-primary 系列，组件即时换肤；
+  // 主题色：写入 html 的 --td-brand-color 系列，组件即时换肤；
   // 色阶随明暗不同，故 theme 变化时也要重算。
   if (themeColor !== prevState.themeColor || theme !== prevState.theme) {
     setThemeColor(themeColor, theme);

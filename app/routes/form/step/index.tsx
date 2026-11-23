@@ -1,19 +1,29 @@
 import { useState } from 'react';
-import { Steps, Form, Button, Typography, Space, Card } from '@douyinfe/semi-ui';
-import { IconTickCircle } from '@douyinfe/semi-icons';
+import {
+  Button,
+  Card,
+  DateRangePicker,
+  Form,
+  Input,
+  Select,
+  Space,
+  Steps,
+  Switch,
+  Textarea,
+  Typography,
+} from 'tdesign-react';
+import { CheckCircleFilledIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
+import useMediaQuery from '~/hooks/useMediaQuery';
 import styles from './style.module.styl';
-
-const { Title, Paragraph } = Typography;
 
 export default function StepForm() {
   const { t } = useTranslation();
   const [current, setCurrent] = useState(0);
   const [form] = Form.useForm();
+  const wide = useMediaQuery('(min-width: 900px)');
 
   const viewForm = () => {
-    const values = form.getValues();
-    form.setValues(values);
     setCurrent(0);
   };
 
@@ -23,155 +33,178 @@ export default function StepForm() {
   };
 
   const toNext = async () => {
-    try {
-      await form.validate();
+    const result = await form.validate();
+    if (result === true) {
       setCurrent(current + 1);
-    } catch {
-      /* validation failed, stay on current step */
     }
   };
 
   return (
     <div className={styles.container}>
       <Card>
-        <Title heading={5}>{t('stepForm.title')}</Title>
+        <Typography.Title level="h5">{t('stepForm.title')}</Typography.Title>
         <div className={styles.wrapper}>
-          {/* 步骤条用 Semi Steps 的 children Steps.Step，描述写在 description 上。
-              / Semi Steps uses child Steps.Step elements with their description on `description`. */}
-          <Steps current={current}>
-            <Steps.Step
-              title={t('stepForm.title.basicInfo')}
-              description={t('stepForm.desc.basicInfo')}
-            />
-            <Steps.Step
-              title={t('stepForm.title.channel')}
-              description={t('stepForm.desc.channel')}
-            />
-            <Steps.Step
-              title={t('stepForm.title.created')}
-              description={t('stepForm.desc.created')}
-            />
-          </Steps>
-          <Form form={form} className={styles.form}>
+          <Steps
+            current={current}
+            layout={wide ? 'horizontal' : 'vertical'}
+            options={[
+              { title: t('stepForm.title.basicInfo'), content: t('stepForm.desc.basicInfo') },
+              { title: t('stepForm.title.channel'), content: t('stepForm.desc.channel') },
+              { title: t('stepForm.title.created'), content: t('stepForm.desc.created') },
+            ]}
+          />
+          <Form
+            form={form}
+            className={styles.form}
+            initialData={{
+              basic: { channelType: 'app', link: 'https://example.com' },
+              channel: { keywords: ['今日头条', '火山'], remind: true },
+            }}
+          >
             {current === 0 && (
               <>
-                <Form.Input
+                <Form.FormItem
                   label={t('stepForm.basicInfo.name')}
-                  field="basic.name"
-                  rules={[{ required: true, message: t('stepForm.basicInfo.name.required') }]}
-                  validator={(value) => {
-                    if (value && !/^[\u4e00-\u9fa5a-zA-Z0-9]{1,20}$/g.test(value)) {
-                      return t('stepForm.basicInfo.name.placeholder');
-                    }
-                    return '';
-                  }}
-                  placeholder={t('stepForm.basicInfo.name.placeholder')}
-                />
-                <Form.Select
-                  label={t('stepForm.basicInfo.channelType')}
-                  field="basic.channelType"
-                  initValue="app"
-                  rules={[{ required: true, message: t('stepForm.basicInfo.channelType.required') }]}
-                  optionList={[
-                    { value: 'app', label: 'APP通用渠道' },
-                    { value: 'site', label: '网页通用渠道' },
-                    { value: 'game', label: '游戏通用渠道' },
+                  name="basic.name"
+                  rules={[
+                    { required: true, message: t('stepForm.basicInfo.name.required') },
+                    {
+                      validator: (value: string) =>
+                        !value || /^[\u4e00-\u9fa5a-zA-Z0-9]{1,20}$/.test(value),
+                      message: t('stepForm.basicInfo.name.placeholder'),
+                    },
                   ]}
-                />
-                <Form.DatePicker
+                >
+                  <Input placeholder={t('stepForm.basicInfo.name.placeholder')} />
+                </Form.FormItem>
+                <Form.FormItem
+                  label={t('stepForm.basicInfo.channelType')}
+                  name="basic.channelType"
+                  rules={[
+                    { required: true, message: t('stepForm.basicInfo.channelType.required') },
+                  ]}
+                >
+                  <Select
+                    options={[
+                      { value: 'app', label: 'APP通用渠道' },
+                      { value: 'site', label: '网页通用渠道' },
+                      { value: 'game', label: '游戏通用渠道' },
+                    ]}
+                  />
+                </Form.FormItem>
+                <Form.FormItem
                   label={t('stepForm.basicInfo.time')}
-                  field="basic.time"
-                  type="dateRange"
-                  className="w-full"
+                  name="basic.time"
                   rules={[{ required: true, message: t('stepForm.basicInfo.time.required') }]}
-                />
-                <Form.Input
+                >
+                  <DateRangePicker className="w-full" />
+                </Form.FormItem>
+                <Form.FormItem
                   label={t('stepForm.basicInfo.link')}
-                  extraText={t('stepForm.basicInfo.link.tips')}
-                  field="basic.link"
-                  // 使用中性占位域名作为示例值
-                  // / Use a neutral placeholder domain as the example value
-                  initValue={'https://example.com'}
+                  name="basic.link"
+                  tips={t('stepForm.basicInfo.link.tips')}
                   rules={[{ required: true }]}
-                  placeholder={t('stepForm.basicInfo.link.placeholder')}
-                />
+                >
+                  <Input placeholder={t('stepForm.basicInfo.link.placeholder')} />
+                </Form.FormItem>
               </>
             )}
             {current === 1 && (
               <>
-                <Form.Input
+                <Form.FormItem
                   label={t('stepForm.channel.source')}
-                  field="channel.source"
+                  name="channel.source"
                   rules={[{ required: true, message: t('stepForm.channel.source.required') }]}
-                  placeholder={t('stepForm.channel.source.placeholder')}
-                />
-                <Form.Input
+                >
+                  <Input placeholder={t('stepForm.channel.source.placeholder')} />
+                </Form.FormItem>
+                <Form.FormItem
                   label={t('stepForm.channel.media')}
-                  field="channel.media"
+                  name="channel.media"
                   rules={[{ required: true, message: t('stepForm.channel.media.required') }]}
-                  placeholder={t('stepForm.channel.media.placeholder')}
-                />
-                <Form.Select
+                >
+                  <Input placeholder={t('stepForm.channel.media.placeholder')} />
+                </Form.FormItem>
+                <Form.FormItem
                   label={t('stepForm.channel.keywords')}
-                  field="channel.keywords"
-                  initValue={['今日头条', '火山']}
+                  name="channel.keywords"
                   rules={[{ required: true }]}
-                  multiple
-                  allowCreate
-                />
-                <Form.Switch
+                >
+                  <Select multiple creatable />
+                </Form.FormItem>
+                <Form.FormItem
                   label={t('stepForm.channel.remind')}
-                  field="channel.remind"
-                  initValue={true}
+                  name="channel.remind"
                   rules={[{ required: true }]}
-                />
-                <Form.TextArea
+                >
+                  <Switch />
+                </Form.FormItem>
+                <Form.FormItem
                   label={t('stepForm.channel.content')}
-                  field="channel.content"
+                  name="channel.content"
                   rules={[{ required: true, message: t('stepForm.channel.content.required') }]}
-                  placeholder={t('stepForm.channel.content.placeholder')}
-                />
+                >
+                  <Textarea placeholder={t('stepForm.channel.content.placeholder')} />
+                </Form.FormItem>
               </>
             )}
             {current !== 2 ? (
-              <Space>
-                {current === 1 && (
-                  <Button size="large" onClick={() => setCurrent(current - 1)}>
-                    {t('stepForm.prev')}
-                  </Button>
-                )}
-                {current !== 2 && (
-                  <Button type="primary" theme="solid" size="large" onClick={toNext}>
-                    {t('stepForm.next')}
-                  </Button>
-                )}
-              </Space>
-            ) : (
-              <div className={styles.result}>
-                <IconTickCircle style={{ fontSize: 64, color: 'var(--semi-color-success)' }} />
-                <Title heading={5}>{t('stepForm.created.success.title')}</Title>
-                <Paragraph type="secondary">{t('stepForm.created.success.desc')}</Paragraph>
+              <Form.FormItem>
                 <Space>
-                  <Button className="mr-[16px]" onClick={viewForm}>
-                    {t('stepForm.created.success.view')}
-                  </Button>
-                  <Button type="primary" theme="solid" onClick={reCreateForm}>
-                    {t('stepForm.created.success.again')}
-                  </Button>
+                  {current === 1 && (
+                    <Button
+                      size="large"
+                      variant="outline"
+                      theme="default"
+                      onClick={() => setCurrent(current - 1)}
+                    >
+                      {t('stepForm.prev')}
+                    </Button>
+                  )}
+                  {current !== 2 && (
+                    <Button theme="primary" size="large" onClick={toNext}>
+                      {t('stepForm.next')}
+                    </Button>
+                  )}
                 </Space>
+              </Form.FormItem>
+            ) : (
+              <div className={styles.result + ' text-center'}>
+                <CheckCircleFilledIcon style={{ fontSize: 64, color: 'var(--td-success-color)' }} />
+                <Typography.Title level="h5">
+                  {t('stepForm.created.success.title')}
+                </Typography.Title>
+                <Typography.Text theme="secondary">
+                  {t('stepForm.created.success.desc')}
+                </Typography.Text>
+                <div className="mt-[16px]">
+                  <Space>
+                    <Button
+                      className="mr-[16px]"
+                      variant="outline"
+                      theme="default"
+                      onClick={viewForm}
+                    >
+                      {t('stepForm.created.success.view')}
+                    </Button>
+                    <Button theme="primary" onClick={reCreateForm}>
+                      {t('stepForm.created.success.again')}
+                    </Button>
+                  </Space>
+                </div>
               </div>
             )}
           </Form>
         </div>
         {current === 2 && (
           <div className={styles['form-extra']}>
-            <Title heading={5}>{t('stepForm.created.extra.title')}</Title>
-            <Paragraph type="secondary">
+            <Typography.Title level="h5">{t('stepForm.created.extra.title')}</Typography.Title>
+            <Typography.Text theme="secondary">
               {t('stepForm.created.extra.desc')}
-              <Button theme="borderless" type="tertiary">
+              <Button theme="default" variant="text">
                 {t('stepForm.created.extra.detail')}
               </Button>
-            </Paragraph>
+            </Typography.Text>
           </div>
         )}
       </Card>

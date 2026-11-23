@@ -1,7 +1,7 @@
 import './style.styl';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
-import { Button } from '@douyinfe/semi-ui';
+import { Button } from 'tdesign-react';
 import AppProviders from '~/components/AppProviders';
 import '~/i18n';
 
@@ -103,10 +103,10 @@ export default function ErrorBoundary() {
             <h1 className="ep-title">{t(views[view].description)}</h1>
             {details && <p className="ep-desc">{details}</p>}
             <div className="ep-actions">
-              <Button onClick={() => window.location.reload()}>
+              <Button variant="outline" theme="default" onClick={() => window.location.reload()}>
                 {t('exception.result.refresh')}
               </Button>
-              <Button type="primary" theme="solid" onClick={() => navigate('/', { replace: true })}>
+              <Button theme="primary" onClick={() => navigate('/', { replace: true })}>
                 {t('exception.result.backHome')}
               </Button>
             </div>

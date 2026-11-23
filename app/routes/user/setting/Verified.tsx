@@ -1,7 +1,8 @@
-import { Descriptions, Table, Typography, Skeleton, Tag, Space, Button, Badge } from '@douyinfe/semi-ui';
-import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table/interface';
+import { Badge, Button, Descriptions, Skeleton, Space, Table, Tag, Typography } from 'tdesign-react';
+import type { PrimaryTableCol } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 import { useEnterpriseQuery, useAuthListQuery } from '~/hooks/api/useUser';
+import useMediaQuery from '~/hooks/useMediaQuery';
 import type { VerifiedInfo, AuthRecord } from '~/api/types';
 import styles from './style.module.styl';
 
@@ -22,53 +23,49 @@ export default function Verified() {
   const { t } = useTranslation();
   const { data: enterprise = DEFAULT_ENTERPRISE, isLoading: loading } = useEnterpriseQuery();
   const { data: tableData = [], isLoading: tableLoading } = useAuthListQuery();
+  const wide = useMediaQuery('(min-width: 900px)');
 
-  const loadingNode = <Skeleton active placeholder={<Skeleton.Paragraph rows={1} />} />;
-  // Semi Descriptions 没有 styles.label，改用每条 data 的 keyStyle 让 label 右对齐
-  // / Semi Descriptions has no styles.label; use keyStyle on each data item to right-align labels
-  const keyStyle = { textAlign: 'right' as const };
+  const loadingNode = <Skeleton animation="gradient" rowCol={[1]} />;
 
-  const columns: ColumnProps<AuthRecord>[] = [
+  const columns: PrimaryTableCol<AuthRecord>[] = [
     {
+      colKey: 'authType',
       title: t('userSetting.verified.authType'),
-      dataIndex: 'authType',
     },
     {
+      colKey: 'authContent',
       title: t('userSetting.verified.authContent'),
-      dataIndex: 'authContent',
     },
     {
+      colKey: 'authStatus',
       title: t('userSetting.verified.authStatus'),
-      dataIndex: 'authStatus',
-      render: (val: AuthRecord['authStatus']) =>
-        val ? (
-          // 认证状态：圆点 + 文案自行组合
-          // / Auth status: dot plus text composed manually
+      cell: ({ row }) =>
+        row.authStatus ? (
           <span className="inline-flex items-center gap-2">
-            <Badge dot type="success" />
+            <Badge dot color="#00a870" />
             {t('userSetting.verified.status.success')}
           </span>
         ) : (
           <span className="inline-flex items-center gap-2">
-            <Badge dot type="primary" />
+            <Badge dot color="#0052d9" />
             {t('userSetting.verified.status.waiting')}
           </span>
         ),
     },
     {
+      colKey: 'createdTime',
       title: t('userSetting.verified.createdTime'),
-      dataIndex: 'createdTime',
     },
     {
+      colKey: 'operation',
       title: t('userSetting.verified.operation'),
-      onHeaderCell: () => ({ style: { paddingLeft: '15px' } }),
-      render: (_: unknown, record: AuthRecord) => (
+      cell: ({ row }) => (
         <Space>
-          <Button theme="borderless" type="tertiary">
+          <Button theme="default" variant="text">
             {t('userSetting.verified.operation.view')}
           </Button>
-          {record.authStatus ? null : (
-            <Button theme="borderless" type="tertiary">
+          {row.authStatus ? null : (
+            <Button theme="default" variant="text">
               {t('userSetting.verified.operation.revoke')}
             </Button>
           )}
@@ -79,34 +76,34 @@ export default function Verified() {
 
   return (
     <div className={styles['verified']}>
-      <Typography.Title heading={5}>{t('userSetting.verified.enterprise')}</Typography.Title>
+      <Typography.Title level="h5">{t('userSetting.verified.enterprise')}</Typography.Title>
       <Descriptions
         className={styles['verified-enterprise']}
         layout="horizontal"
-        column={3}
-        data={Object.entries(enterprise).map(([key, value]) => ({
-          key: t(`userSetting.verified.label.${key}`),
-          keyStyle,
-          value: loading ? (
+        column={wide ? 3 : 1}
+        tableLayout="auto"
+        labelStyle={{ textAlign: 'right', whiteSpace: 'nowrap' }}
+        items={Object.entries(enterprise).map(([key, value]) => ({
+          label: t(`userSetting.verified.label.${key}`),
+          content: loading ? (
             loadingNode
           ) : typeof value === 'boolean' ? (
             value ? (
-              <Tag color="green">{t('userSetting.value.verified')}</Tag>
+              <Tag theme="success">{t('userSetting.value.verified')}</Tag>
             ) : (
-              <Tag color="red">{t('userSetting.value.notVerified')}</Tag>
+              <Tag theme="danger">{t('userSetting.value.notVerified')}</Tag>
             )
           ) : (
             (value as string)
           ),
         }))}
       />
-      <Typography.Title heading={5}>{t('userSetting.verified.records')}</Typography.Title>
+      <Typography.Title level="h5">{t('userSetting.verified.records')}</Typography.Title>
       <Table<AuthRecord>
         rowKey="createdTime"
         columns={columns}
-        dataSource={tableData}
+        data={tableData}
         loading={tableLoading}
-        pagination={false}
       />
     </div>
   );

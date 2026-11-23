@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconMaximize, IconMinimize } from '@douyinfe/semi-icons';
+import { FullscreenIcon, FullscreenExitIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import screenfull from 'screenfull';
 import IconButton from './IconButton';
@@ -17,7 +17,7 @@ export default function FullscreenToggle() {
 
   return (
     <IconButton
-      icon={isFull ? <IconMinimize /> : <IconMaximize />}
+      icon={isFull ? <FullscreenExitIcon /> : <FullscreenIcon />}
       tooltip={t('common.fullscreen')}
       onClick={toggle}
     />

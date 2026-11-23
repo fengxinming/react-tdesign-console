@@ -5,13 +5,13 @@ html, body
   padding 0
   font-size 12px
 
-// Semi 把亮/暗两套色盘挂在 body 上（--semi-color-bg-* 等），body 本身在作用域内。
-// 页面底色直接用 Semi 的背景变量，明暗切换（body[theme-mode='dark']）时自动跟随。
-// / Semi mounts both light/dark palettes on body (--semi-color-bg-*), so body itself is in scope.
+// TDesign 把亮/暗两套色盘挂在 html 上（--td-* 等），body 在变量作用域内。
+// 页面底色直接用 TDesign 的背景变量，明暗切换（html[theme-mode='dark']）时自动跟随。
+// / TDesign mounts both light/dark palettes on html (--td-*), so body is in scope.
 html, body
   min-height 100%
-  color var(--semi-color-text-0)
-  background-color var(--semi-color-bg-0)
+  color var(--td-text-color-primary)
+  background-color var(--td-bg-color-page)
 
 .chart-wrapper
   .g2-tooltip
@@ -26,7 +26,7 @@ html, body
     width 180px !important
     opacity 1 !important
 
-body[theme-mode='dark']
+[theme-mode='dark']
   .chart-wrapper
     .g2-tooltip
       background linear-gradient(
@@ -38,21 +38,17 @@ body[theme-mode='dark']
       border-radius 6px
       box-shadow none !important
 
-.semi-card
+.t-card
   h1, h2, h3, h4, h5, h6
     margin-top 0
     margin-bottom 16px
 
-.semi-form-field-label-required
-  display inline
-  vertical-align baseline
-
 /* nprogress 导航进度条：官方默认蓝 #29d 改为项目主题色。
 #nprogress 挂在 body 下，commons/html.ts 的 setThemeColor 把主色同步到
-body 上的 --semi-color-primary，与 Semi 主色保持一致。 */
+html 上的 --td-brand-color，这里直接读取即可。 */
 #nprogress
   .bar
-    background var(--semi-color-primary)
+    background var(--td-brand-color)
 
   .peg
-    box-shadow 0 0 10px var(--semi-color-primary), 0 0 5px var(--semi-color-primary)
+    box-shadow 0 0 10px var(--td-brand-color), 0 0 5px var(--td-brand-color)

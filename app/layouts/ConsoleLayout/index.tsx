@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 import { Navigate } from 'react-router';
-import { Layout, Skeleton } from '@douyinfe/semi-ui';
+import { Layout, Skeleton } from 'tdesign-react';
 import HeaderBar from './HeaderBar';
 import SiderNav from './SiderNav';
 import BreadcrumbNav from './BreadcrumbNav';
@@ -33,7 +33,7 @@ export default function ConsoleLayout() {
     return (
       <Layout className={styles.layout}>
         <Layout.Content className="!p-[24px]">
-          <Skeleton active className="h-[100vh]" />
+          <Skeleton animation="gradient" theme="paragraph" />
         </Layout.Content>
       </Layout>
     );

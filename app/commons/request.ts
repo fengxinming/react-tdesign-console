@@ -1,11 +1,11 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-import { Toast } from '@douyinfe/semi-ui';
+import { MessagePlugin } from 'tdesign-react';
 import { createMockAdapter } from 'vite-plugin-mock-data/axios-adapter';
 import i18n from '~/i18n';
 import { useUserStore } from '~/store';
 
-/** 错误提示：Semi Toast 是静态方法，浮层挂到 body，自动跟随明暗主题，无需 context 桥接。 */
-const showError = (text: string) => Toast.error({ content: text });
+/** 错误提示：TDesign MessagePlugin 是命令式 API，浮层挂到 body，自动跟随明暗主题。 */
+const showError = (text: string) => MessagePlugin.error(text);
 
 const service = axios.create({
   baseURL: __BASE_URL__ + 'api',
@@ -26,7 +26,7 @@ service.interceptors.response.use(
   ({ data: res = {} }) => {
     const { code, data, message } = res;
     if (code !== 0 && code !== 200) {
-      showError(i18n.t(message) || message || i18n.t('Request Error'));
+      void showError(i18n.t(message) || message || i18n.t('Request Error'));
       if (code == null || [1003, 1004, 1005].includes(code)) {
         useUserStore.getState().logout();
       }
@@ -36,7 +36,7 @@ service.interceptors.response.use(
   },
   (err = {}) => {
     const { message } = err;
-    showError(i18n.t(message) || message || i18n.t('Request Error'));
+    void showError(i18n.t(message) || message || i18n.t('Request Error'));
     return Promise.reject(err);
   },
 );

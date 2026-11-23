@@ -1,14 +1,14 @@
 // 头部原本有一条给「头像悬浮换图角标」着色的规则；该角标只有旧组件库的 Upload 才渲染，
-// 头像现在是纯 Semi Avatar、不再可换，节点不存在，规则一并删除。
+// 头像现在是纯 TDesign Avatar、不再可换，节点不存在，规则一并删除。
 // / The header used to colour an avatar hover "change photo" badge. That badge only existed
-// because the old Upload rendered it; the avatar is now a plain Semi Avatar with no upload, so
+// because the old Upload rendered it; the avatar is now a plain TDesign Avatar with no upload, so
 // the node is gone and the rule went with it.
 .header
   height 200px
   display flex
   justify-content center
   align-items center
-  color var(--semi-color-text-0)
+  color var(--td-text-color-primary)
   border-radius 4px
   position relative
 
@@ -39,33 +39,30 @@
   cursor pointer
 
   :global
-    // Semi Typography.Title heading={5} 渲染为 h5.semi-typography
-    // / Semi Typography.Title heading={5} renders as h5.semi-typography
-    h5.semi-typography
+    // TDesign Typography.Title level="h5" 渲染为 h5.t-typography
+    // / TDesign Typography.Title level="h5" renders as h5.t-typography
+    h5.t-typography
       margin-top 0
       margin-bottom 6px
       font-size 14px
 
-    // Semi Typography.Text type="secondary" → .semi-typography-secondary
-    // / Semi Typography.Text type="secondary" → .semi-typography-secondary
-    .semi-typography-secondary
+    // TDesign Typography.Text theme="secondary" → .t-typography--secondary
+    // / TDesign Typography.Text theme="secondary" → .t-typography--secondary
+    .t-typography--secondary
       font-size 12px
       margin-left 12px
 
-// 列表项由 Semi List 渲染，类名 .semi-list-item；Semi 默认不给列表项加 hover 底色与
-// 末项分隔线（分隔线只在 split 模式下出现），因此这里只需改写内边距。
-// / List items come from Semi List as .semi-list-item. Semi adds neither a hover background
-// nor a trailing divider by default (dividers only appear with `split`), so only padding
-// needs overriding here.
+// 列表项由 TDesign List 渲染，类名 .t-list-item
+// / List items come from TDesign List as .t-list-item
 .team-list
-  :global(.semi-list-item)
+  :global(.t-list-item)
     padding 8px 0
 
     &:last-child
       padding-bottom 0
 
 .news-list
-  :global(.semi-list-item)
+  :global(.t-list-item)
     padding 24px 4px
 
     &:last-child

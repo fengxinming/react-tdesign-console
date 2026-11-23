@@ -1,4 +1,4 @@
-import { Space } from '@douyinfe/semi-ui';
+import { Space } from 'tdesign-react';
 import ChatPanel from './ChatPanel';
 import Studio from './Studio';
 import DataStatistic from './DataStatistic';
@@ -13,13 +13,13 @@ export default function Monitor() {
         <ChatPanel />
       </div>
       <div className="flex-1 px-[16px]">
-        <Space spacing={16} vertical className="w-full" style={{ alignItems: 'stretch' }}>
+        <Space direction="vertical" size={16} className="w-full" style={{ alignItems: 'stretch' }}>
           <Studio />
           <DataStatistic />
         </Space>
       </div>
       <div className="basis-[280px]">
-        <Space spacing={16} vertical className="w-full" style={{ alignItems: 'stretch' }}>
+        <Space direction="vertical" size={16} className="w-full" style={{ alignItems: 'stretch' }}>
           <StudioStatus />
           <QuickOperation />
           <StudioInformation />

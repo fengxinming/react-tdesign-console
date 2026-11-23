@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { Card, RadioGroup, Table, Typography } from '@douyinfe/semi-ui';
-import { IconCaretup, IconCaretdown } from '@douyinfe/semi-icons';
+import { Card, RadioGroup, Table, Typography } from 'tdesign-react';
+import { CaretUpIcon, CaretDownIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData, useNavigation } from 'react-router';
+import type { PrimaryTableCol } from 'tdesign-react';
 import type { WorkplaceLoaderData } from './types';
 import type { PopularItem } from '~/api/types';
 
 import styles from './style.module.styl';
-
-const { Title, Paragraph, Text } = Typography;
 
 // 热门内容榜：由路由 loader 提供数据，这里直接 useLoaderData 取用
 const TITLES = [
@@ -33,36 +32,38 @@ export default function PopularContents() {
           title: TITLES[(d.rank + type) % TITLES.length],
         }));
 
-  const columns = [
-    { title: t('workplace.column.rank'), dataIndex: 'rank', width: 65 },
+  const columns: PrimaryTableCol<PopularItem>[] = [
+    { title: t('workplace.column.rank'), colKey: 'rank', width: 65 },
     {
       title: t('workplace.column.title'),
-      dataIndex: 'title',
-      render: (x: string) => (
-        <Paragraph className="!m-0" ellipsis>
-          {x}
-        </Paragraph>
+      colKey: 'title',
+      cell: ({ row }) => (
+        <Typography.Paragraph className="!m-0" ellipsis>
+          {row.title}
+        </Typography.Paragraph>
       ),
     },
     {
       title: t('workplace.column.pv'),
-      dataIndex: 'pv',
+      colKey: 'pv',
       width: 100,
-      render: (text: number) => `${text / 1000}k`,
+      className: styles['table-col-secondary'],
+      cell: ({ row }) => `${row.pv / 1000}k`,
     },
     {
       title: t('workplace.column.increase'),
-      dataIndex: 'increase',
-      sorter: (a?: PopularItem, b?: PopularItem) => (a?.increase ?? 0) - (b?.increase ?? 0),
+      colKey: 'increase',
+      sorter: (a, b) => a.increase - b.increase,
       width: 110,
-      render: (text: number) => (
+      className: styles['table-col-secondary'],
+      cell: ({ row }) => (
         <span>
-          {`${(text * 100).toFixed(2)}%`}
+          {`${(row.increase * 100).toFixed(2)}%`}
           <span className="ml-[4px]">
-            {text < 0 ? (
-              <IconCaretup className={styles['caret-green']} />
+            {row.increase < 0 ? (
+              <CaretUpIcon className={styles['caret-green']} />
             ) : (
-              <IconCaretdown className={styles['caret-red']} />
+              <CaretDownIcon className={styles['caret-red']} />
             )}
           </span>
         </span>
@@ -73,13 +74,13 @@ export default function PopularContents() {
   return (
     <Card bordered={false}>
       <div className="flex justify-between">
-        <Title heading={5}>{t('workplace.popularContents')}</Title>
-        <Text link>{t('workplace.seeMore')}</Text>
+        <Typography.Title level="h5">{t('workplace.popularContents')}</Typography.Title>
+        <Typography.Text theme="primary">{t('workplace.seeMore')}</Typography.Text>
       </div>
       <RadioGroup
-        type="button"
+        theme="button"
         value={type}
-        onChange={(e) => setType(e.target.value)}
+        onChange={(value) => setType(value as number)}
         options={[
           { label: t('workplace.text'), value: 0 },
           { label: t('workplace.image'), value: 1 },
@@ -88,12 +89,13 @@ export default function PopularContents() {
         className="mb-[16px]"
       />
       <Table
+        className={styles['popular-table']}
         rowKey="rank"
         columns={columns}
-        dataSource={filtered}
+        data={filtered}
         loading={loading}
         tableLayout="fixed"
-        pagination={{ pageSize: 5, size: 'small' }}
+        pagination={{ defaultPageSize: 5, size: 'small', total: filtered.length }}
       />
     </Card>
   );

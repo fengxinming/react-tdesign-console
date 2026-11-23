@@ -1,6 +1,15 @@
-import { useEffect, useRef } from 'react';
-import { Button, Form, Skeleton, Space, Toast } from '@douyinfe/semi-ui';
-import type { FormApi } from '@douyinfe/semi-ui/lib/es/form';
+import { useEffect } from 'react';
+import {
+  Button,
+  Cascader,
+  Form,
+  Input,
+  MessagePlugin,
+  Select,
+  Skeleton,
+  Space,
+  Textarea,
+} from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 import { useUserStore } from '~/store';
 import { useSaveInfo } from '~/hooks/api/useUser';
@@ -40,127 +49,120 @@ const cascaderOptions = [
 /** 基础信息表单:邮箱/昵称/国家地区/所在地/地址/简介 + 保存/重置。 */
 export default function InfoForm() {
   const { t, i18n } = useTranslation();
-  // Semi 没有 Form.useForm，用 getFormApi 回调保存 formApi 引用
-  // / Semi has no Form.useForm; keep the formApi reference via the getFormApi callback
-  const formApiRef = useRef<FormApi<BasicInfoForm> | null>(null);
+  const [form] = Form.useForm();
 
   const user = useUserStore((s) => s.user);
   const loading = !user;
   const { mutateAsync: saveInfo, isPending: saving } = useSaveInfo();
 
-  // 用户数据到达后回填表单（仅预填 email / 昵称，其余受控于表单自身）
   useEffect(() => {
     if (user) {
-      formApiRef.current?.setValues({ email: user.email, nickName: user.name } as Partial<BasicInfoForm>);
+      form.setFieldsValue({ email: user.email, nickName: user.name });
     }
-  }, [user]);
+  }, [user, form]);
 
   const handleSave = async () => {
     try {
-      await formApiRef.current?.validate();
-      const values = formApiRef.current!.getValues();
+      const result = await form.validate();
+      if (result !== true) {
+        return;
+      }
+      const values = form.getFieldsValue(true) as BasicInfoForm;
       await saveInfo(values);
-      Toast.success(t('userSetting.saveSuccess'));
+      void MessagePlugin.success(t('userSetting.saveSuccess'));
     } catch {
       /* 校验未通过,不提交 */
     }
   };
 
-  const handleReset = () => formApiRef.current?.reset();
-
-  const loadingNode = (rows = 1) => (
-    <Skeleton active placeholder={<Skeleton.Paragraph rows={rows} />} />
-  );
+  const handleReset = () => form.reset();
 
   const lang = i18n.language;
 
   return (
-    <div className="w-[500px] mt-[6px]">
+    <div className="w-[500px] max-w-full mt-[6px]">
       <Form
-        getFormApi={(api) => {
-          formApiRef.current = api;
-        }}
-        labelCol={{ span: lang === 'en-US' ? 7 : 6 }}
-        wrapperCol={{ span: lang === 'en-US' ? 17 : 18 }}
+        form={form}
+        labelWidth={lang === 'en-US' ? 100 : 80}
+        initialData={{ location: ['BeiJing', 'BeiJing', 'HaiDian'] }}
       >
         {loading ? (
-          loadingNode()
+          <Skeleton animation="gradient" rowCol={[1]} />
         ) : (
-          <Form.Input
-            field="email"
+          <Form.FormItem
             label={t('userSetting.info.email')}
+            name="email"
             rules={[
               {
-                type: 'email',
                 required: true,
+                email: true,
                 message: t('userSetting.info.email.placeholder'),
               },
             ]}
-            placeholder={t('userSetting.info.email.placeholder')}
-          />
+          >
+            <Input placeholder={t('userSetting.info.email.placeholder')} />
+          </Form.FormItem>
         )}
         {loading ? (
-          loadingNode()
+          <Skeleton animation="gradient" rowCol={[1]} />
         ) : (
-          <Form.Input
-            field="nickName"
+          <Form.FormItem
             label={t('userSetting.info.nickName')}
+            name="nickName"
             rules={[{ required: true, message: t('userSetting.info.nickName.placeholder') }]}
-            placeholder={t('userSetting.info.nickName.placeholder')}
-          />
+          >
+            <Input placeholder={t('userSetting.info.nickName.placeholder')} />
+          </Form.FormItem>
         )}
         {loading ? (
-          loadingNode()
+          <Skeleton animation="gradient" rowCol={[1]} />
         ) : (
-          <Form.Select
-            field="rangeArea"
+          <Form.FormItem
             label={t('userSetting.info.area')}
+            name="rangeArea"
             rules={[{ required: true, message: t('userSetting.info.area.placeholder') }]}
-            optionList={[{ label: '中国', value: '中国' }]}
-            placeholder={t('userSetting.info.area.placeholder')}
-          />
+          >
+            <Select
+              options={[{ label: '中国', value: '中国' }]}
+              placeholder={t('userSetting.info.area.placeholder')}
+            />
+          </Form.FormItem>
         )}
         {loading ? (
-          loadingNode()
+          <Skeleton animation="gradient" rowCol={[1]} />
         ) : (
-          <Form.Cascader
-            field="location"
+          <Form.FormItem
             label={t('userSetting.info.location')}
-            initValue={['BeiJing', 'BeiJing', 'HaiDian']}
+            name="location"
             rules={[{ required: true }]}
-            treeData={cascaderOptions}
-          />
+          >
+            <Cascader options={cascaderOptions} />
+          </Form.FormItem>
         )}
         {loading ? (
-          loadingNode()
+          <Skeleton animation="gradient" rowCol={[1]} />
         ) : (
-          <Form.Input
-            field="address"
-            label={t('userSetting.info.address')}
-            placeholder={t('userSetting.info.address.placeholder')}
-          />
+          <Form.FormItem label={t('userSetting.info.address')} name="address">
+            <Input placeholder={t('userSetting.info.address.placeholder')} />
+          </Form.FormItem>
         )}
         {loading ? (
-          loadingNode(3)
+          <Skeleton animation="gradient" rowCol={[1, 1, 1]} />
         ) : (
-          <Form.TextArea
-            field="profile"
-            label={t('userSetting.info.profile')}
-            placeholder={t('userSetting.info.profile.placeholder')}
-          />
+          <Form.FormItem label={t('userSetting.info.profile')} name="profile">
+            <Textarea placeholder={t('userSetting.info.profile.placeholder')} />
+          </Form.FormItem>
         )}
-        {/* 占位标签列用于对齐按钮；Semi 不会给标签追加冒号，空白 label 不会渲染出多余的「:」 */}
-        {/* / Placeholder label column to align the buttons; Semi does not append a colon to labels, so a blank label renders no stray ":" */}
-        <Form.Slot label=" ">
+        <div style={{ marginLeft: lang === 'en-US' ? 100 : 80 }} className="mt-[8px]">
           <Space>
-            <Button type="primary" theme="solid" loading={saving} onClick={handleSave}>
+            <Button theme="primary" loading={saving} onClick={handleSave}>
               {t('userSetting.save')}
             </Button>
-            <Button type="secondary" onClick={handleReset}>
+            <Button theme="default" variant="outline" onClick={handleReset}>
               {t('userSetting.reset')}
             </Button>
           </Space>
-        </Form.Slot>
+        </div>
       </Form>
     </div>
   );

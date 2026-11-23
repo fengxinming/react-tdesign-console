@@ -1,7 +1,8 @@
-import type { ButtonProps } from '@douyinfe/semi-ui/lib/es/button';
+import type { ReactElement } from 'react';
+import type { ButtonProps } from 'tdesign-react';
 
 export type IconButtonProps = Omit<ButtonProps, 'icon' | 'onClick' | 'className'> & {
-  icon: React.ReactNode;
+  icon: ReactElement;
   className?: string;
   onClick?: () => void;
   tooltip?: string;

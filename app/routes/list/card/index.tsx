@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Card, Tabs, Input, Typography, Row, Col, TabPane } from '@douyinfe/semi-ui';
-import { IconSearch } from '@douyinfe/semi-icons';
+import { Card, Col, Input, Row, Tabs, Typography } from 'tdesign-react';
+import { SearchIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData, useNavigation } from 'react-router';
 import { fetchCardList } from '~/api/list';
@@ -9,8 +9,6 @@ import AddCard from './AddCard';
 import type { CardItem } from './types';
 import type { CardListData, CardType } from '~/api/types';
 import styles from './style.module.styl';
-
-const { Title } = Typography;
 
 const defaultList: CardItem[] = Array.from({ length: 10 }, () => ({}));
 
@@ -35,12 +33,12 @@ export default function CardList() {
   const getCardList = (list: CardItem[], type: CardType) => (
     <Row gutter={24} className="min-h-[180px] w-full">
       {type === 'quality' && (
-        <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6}>
+        <Col xs={12} sm={6} md={4} lg={3}>
           <AddCard description={t('cardList.add.quality')} />
         </Col>
       )}
       {list.map((item) => (
-        <Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={6} key={item.id}>
+        <Col xs={12} sm={6} md={4} lg={3} key={item.id}>
           <CardBlock card={item} type={type} loading={loading} />
         </Col>
       ))}
@@ -49,28 +47,29 @@ export default function CardList() {
 
   return (
     <Card bordered={false}>
-      <Title heading={5}>{t('menu.list.cardList')}</Title>
+      <Typography.Title level="h5">{t('menu.list.cardList')}</Typography.Title>
       <Tabs
-        activeKey={activeKey}
-        onChange={setActiveKey}
-        tabBarExtraContent={
+        value={activeKey}
+        onChange={(value) => setActiveKey(String(value))}
+        action={
           <Input
-            prefix={<IconSearch />}
-            className="!w-[240px]"
+            prefixIcon={<SearchIcon />}
+            className="!w-[240px] max-md:!hidden"
             placeholder={t(`cardList.tab.${activeKey}.placeholder`)}
           />
         }
-      >
-        <TabPane itemKey="all" tab={t('cardList.tab.title.all')} />
-        <TabPane itemKey="quality" tab={t('cardList.tab.title.quality')} />
-        <TabPane itemKey="service" tab={t('cardList.tab.title.service')} />
-        <TabPane itemKey="rules" tab={t('cardList.tab.title.rules')} />
-      </Tabs>
+        list={[
+          { value: 'all', label: t('cardList.tab.title.all') },
+          { value: 'quality', label: t('cardList.tab.title.quality') },
+          { value: 'service', label: t('cardList.tab.title.service') },
+          { value: 'rules', label: t('cardList.tab.title.rules') },
+        ]}
+      />
       <div className={styles.container}>
         {activeKey === 'all' ? (
           Object.entries(data).map(([key, list]) => (
             <div key={key}>
-              <Title heading={5}>{t(`cardList.tab.title.${key}`)}</Title>
+              <Typography.Title level="h5">{t(`cardList.tab.title.${key}`)}</Typography.Title>
               {getCardList(list, key as CardType)}
             </div>
           ))

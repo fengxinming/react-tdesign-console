@@ -1,6 +1,6 @@
 .search-form-wrapper
   display flex
-  border-bottom 1px solid var(--semi-color-border)
+  border-bottom 1px solid var(--td-component-stroke)
   margin-bottom 20px
 
   .right-button
@@ -9,17 +9,15 @@
     justify-content space-between
     padding-left 20px
     margin-bottom 20px
-    border-left 1px solid var(--semi-color-border)
+    border-left 1px solid var(--td-component-stroke)
     box-sizing border-box
 
 .search-form
   padding-right 20px
 
-  // Semi Form labelAlign="left" 把类直接加在 <label> 上（.semi-form-field-label-left），
-  // 因此这里直接选中该元素
-  // / Semi Form labelAlign="left" puts the class on the <label> itself
-  // (.semi-form-field-label-left), so it is targeted directly here
-  :global(.semi-form-field-label-left)
+  // TDesign Form labelAlign="left" 对应 .t-form__label--left
+  // / TDesign Form labelAlign="left" maps to .t-form__label--left
+  :global(.t-form__label--left)
     white-space nowrap
 
 .content-type
@@ -28,3 +26,14 @@
   > svg
     margin-right 8px
     margin-top 4px
+
+@media (max-width: 767px)
+  .search-form-wrapper
+    flex-direction column
+
+    .right-button
+      flex-direction row
+      gap 12px
+      padding-left 0
+      border-left 0
+      margin-top 8px

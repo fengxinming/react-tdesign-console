@@ -1,4 +1,5 @@
-import { Breadcrumb } from '@douyinfe/semi-ui';
+import { isValidElement } from 'react';
+import { Breadcrumb } from 'tdesign-react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLayoutStore } from '~/store';
@@ -8,17 +9,15 @@ function BreadcrumbNav() {
   const menuTrail = useLayoutStore((s) => s.menuTrail);
   const icon = menuTrail[0]?.icon;
 
-  // Semi Breadcrumb 用 routes 数据驱动；首项仍是「图标」面包屑，分隔符交给 Semi 默认渲染。
-  // / Semi Breadcrumb uses the `routes` data-driven API; the first crumb stays the
-  // icon-only entry, separators are rendered by Semi by default.
-  const routes = [
-    ...(icon ? [{ name: '', path: menuTrail[0]?.name, icon }] : []),
-    ...menuTrail.map(({ name, path }) => ({ name: t(name) || name, path })),
+  // TDesign Breadcrumb 用 options 数据驱动；首项仍是「图标」面包屑，分隔符交给 TDesign 默认渲染。
+  const options = [
+    ...(isValidElement(icon) ? [{ icon }] : []),
+    ...menuTrail.map(({ name }) => ({ content: t(name) || name })),
   ];
 
   return (
     <div className="py-[8px]">
-      <Breadcrumb routes={routes} />
+      <Breadcrumb options={options} />
     </div>
   );
 }

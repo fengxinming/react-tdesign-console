@@ -1,6 +1,6 @@
-import { Layout } from '@douyinfe/semi-ui';
+import { Layout } from 'tdesign-react';
 import styles from './style.module.styl';
 
 export default function Footer() {
-  return <Layout.Footer className={styles.footer}>React Semi Console</Layout.Footer>;
+  return <Layout.Footer className={styles.footer}>React TDesign Console</Layout.Footer>;
 }

@@ -1,4 +1,4 @@
-import { Row, Col, Space } from '@douyinfe/semi-ui';
+import { Col, Row, Space } from 'tdesign-react';
 import {
   fetchPublicOpinion,
   fetchContentPublishing,
@@ -22,18 +22,18 @@ export async function loader(): Promise<DataAnalysisLoaderData> {
 
 export default function DataAnalysis() {
   return (
-    <Space spacing={16} vertical className="w-full" style={{ alignItems: 'stretch' }}>
+    <Space direction="vertical" size={16} className="w-full" style={{ alignItems: 'stretch' }}>
       <PublicOpinion />
       <Row gutter={16}>
-        <Col span={14}>
+        <Col xs={12} md={7}>
           <PublishingRate />
         </Col>
-        <Col span={10}>
+        <Col xs={12} md={5}>
           <AuthorTable />
         </Col>
       </Row>
       <Row>
-        <Col span={24}>
+        <Col span={12}>
           <PeriodLine />
         </Col>
       </Row>

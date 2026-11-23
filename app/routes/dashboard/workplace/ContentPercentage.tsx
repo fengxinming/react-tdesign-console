@@ -1,4 +1,4 @@
-import { Card, Spin, Typography } from '@douyinfe/semi-ui';
+import { Card, Loading, Typography } from 'tdesign-react';
 import { VChart } from '@visactor/react-vchart';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '~/store';
@@ -38,12 +38,12 @@ export default function ContentPercentage() {
 
   return (
     <Card bordered={false}>
-      <Typography.Title heading={5}>{t('workplace.contentPercentage')}</Typography.Title>
-      <Spin spinning={loading} className="w-full">
+      <Typography.Title level="h5">{t('workplace.contentPercentage')}</Typography.Title>
+      <Loading loading={loading} className="w-full">
         <div className="h-[339px]">
           <VChart spec={chartSpec} />
         </div>
-      </Spin>
+      </Loading>
     </Card>
   );
 }

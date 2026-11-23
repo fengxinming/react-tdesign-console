@@ -1,5 +1,5 @@
-import { Layout } from '@douyinfe/semi-ui';
-import { IconChevronLeft, IconChevronRight } from '@douyinfe/semi-icons';
+import { Layout } from 'tdesign-react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'tdesign-icons-react';
 import { useSettingsStore, useLayoutStore } from '~/store';
 import AppMenu from '~/components/AppMenu';
 
@@ -8,7 +8,7 @@ import styles from './style.module.styl';
 import type { SiderNavProps } from './types';
 import classNames from 'classnames';
 
-const { Sider } = Layout;
+const { Aside } = Layout;
 
 function handleOpenKeysChange(openKeys: string[]) {
   useLayoutStore.setState({ openKeys });
@@ -22,11 +22,10 @@ function SiderNav({ className, style }: SiderNavProps = {}) {
   const actualWidth = collapsed ? 48 : menuWidth;
 
   return (
-    // Semi Sider 无 width/collapsed/collapsible/trigger/breakpoint，宽度改由 style 控制。
-    // / Semi Sider has no width/collapsed/collapsible/trigger/breakpoint; control width via style.
-    <Sider
+    <Aside
       className={classNames(styles['layout-sider'], className)}
-      style={{ ...style, width: actualWidth }}
+      width={`${actualWidth}px`}
+      style={style}
     >
       <div className={styles['menu-wrapper']}>
         <AppMenu
@@ -37,9 +36,9 @@ function SiderNav({ className, style }: SiderNavProps = {}) {
         />
       </div>
       <div className={styles['collapse-btn']} onClick={toggleCollapsed}>
-        {collapsed ? <IconChevronRight /> : <IconChevronLeft />}
+        {collapsed ? <ChevronRightIcon size={16} /> : <ChevronLeftIcon size={16} />}
       </div>
-    </Sider>
+    </Aside>
   );
 }
 

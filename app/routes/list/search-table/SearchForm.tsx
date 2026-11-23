@@ -1,5 +1,5 @@
-import { Form, Button, Row, Col } from '@douyinfe/semi-ui';
-import { IconRefresh, IconSearch } from '@douyinfe/semi-icons';
+import { Button, Col, DateRangePicker, Form, Input, Row, Select, Space } from 'tdesign-react';
+import { RefreshIcon, SearchIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { ContentType, FilterType, Status } from './constants';
 import styles from './style.module.styl';
@@ -9,10 +9,10 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
   const { t, i18n } = useTranslation();
   const [form] = Form.useForm();
 
-  const colSpan = i18n.language === 'zh-CN' ? 8 : 12;
+  const colSpan = i18n.language === 'zh-CN' ? 4 : 6;
 
   const handleSubmit = () => {
-    onSearch(form.getValues());
+    onSearch(form.getFieldsValue(true));
   };
 
   const handleReset = () => {
@@ -22,79 +22,64 @@ export default function SearchForm({ onSearch }: SearchFormProps) {
 
   return (
     <div className={styles['search-form-wrapper']}>
-      <Form
-        form={form}
-        className={styles['search-form']}
-        labelAlign="left"
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 19 }}
-      >
-        <Row gutter={24}>
-          <Col span={colSpan}>
-            <Form.Input
-              label={t('searchTable.columns.id')}
-              field="id"
-              placeholder={t('searchForm.id.placeholder')}
-              showClear
-            />
+      <Form form={form} className={styles['search-form']} labelAlign="left" labelWidth={80}>
+        <Row gutter={[80, 16]}>
+          <Col xs={12} sm={colSpan}>
+            <Form.FormItem label={t('searchTable.columns.id')} name="id">
+              <Input placeholder={t('searchForm.id.placeholder')} clearable />
+            </Form.FormItem>
           </Col>
-          <Col span={colSpan}>
-            <Form.Input
-              label={t('searchTable.columns.name')}
-              field="name"
-              placeholder={t('searchForm.name.placeholder')}
-              showClear
-            />
+          <Col xs={12} sm={colSpan}>
+            <Form.FormItem label={t('searchTable.columns.name')} name="name">
+              <Input placeholder={t('searchForm.name.placeholder')} clearable />
+            </Form.FormItem>
           </Col>
-          <Col span={colSpan}>
-            <Form.Select
-              label={t('searchTable.columns.contentType')}
-              field="contentType"
-              placeholder={t('searchForm.all.placeholder')}
-              optionList={ContentType.map((item, index) => ({ label: item, value: index }))}
-              multiple
-              showClear
-            />
+          <Col xs={12} sm={colSpan}>
+            <Form.FormItem label={t('searchTable.columns.contentType')} name="contentType">
+              <Select
+                placeholder={t('searchForm.all.placeholder')}
+                options={ContentType.map((item, index) => ({ label: item, value: index }))}
+                multiple
+                clearable
+              />
+            </Form.FormItem>
           </Col>
-          <Col span={colSpan}>
-            <Form.Select
-              label={t('searchTable.columns.filterType')}
-              field="filterType"
-              placeholder={t('searchForm.all.placeholder')}
-              optionList={FilterType.map((item, index) => ({ label: item, value: index }))}
-              multiple
-              showClear
-            />
+          <Col xs={12} sm={colSpan}>
+            <Form.FormItem label={t('searchTable.columns.filterType')} name="filterType">
+              <Select
+                placeholder={t('searchForm.all.placeholder')}
+                options={FilterType.map((item, index) => ({ label: item, value: index }))}
+                multiple
+                clearable
+              />
+            </Form.FormItem>
           </Col>
-          <Col span={colSpan}>
-            <Form.DatePicker
-              label={t('searchTable.columns.createdTime')}
-              field="createdTime"
-              type="dateRange"
-              showClear
-              className="w-full"
-              disabledDate={(date?: Date) => (date ? date.getTime() > Date.now() : false)}
-            />
+          <Col xs={12} sm={colSpan}>
+            <Form.FormItem label={t('searchTable.columns.createdTime')} name="createdTime">
+              <DateRangePicker className="w-full" clearable />
+            </Form.FormItem>
           </Col>
-          <Col span={colSpan}>
-            <Form.Select
-              label={t('searchTable.columns.status')}
-              field="status"
-              placeholder={t('searchForm.all.placeholder')}
-              optionList={Status.map((item, index) => ({ label: item, value: index }))}
-              multiple
-              showClear
-            />
+          <Col xs={12} sm={colSpan}>
+            <Form.FormItem label={t('searchTable.columns.status')} name="status">
+              <Select
+                placeholder={t('searchForm.all.placeholder')}
+                options={Status.map((item, index) => ({ label: item, value: index }))}
+                multiple
+                clearable
+              />
+            </Form.FormItem>
           </Col>
         </Row>
       </Form>
       <div className={styles['right-button']}>
-        <Button type="primary" theme="solid" icon={<IconSearch />} onClick={handleSubmit}>
-          {t('searchTable.form.search')}
-        </Button>
-        <Button icon={<IconRefresh />} onClick={handleReset}>
-          {t('searchTable.form.reset')}
-        </Button>
+        <Space direction="vertical">
+          <Button theme="primary" icon={<SearchIcon />} onClick={handleSubmit}>
+            {t('searchTable.form.search')}
+          </Button>
+          <Button variant="outline" theme="default" icon={<RefreshIcon />} onClick={handleReset}>
+            {t('searchTable.form.reset')}
+          </Button>
+        </Space>
       </div>
     </div>
   );

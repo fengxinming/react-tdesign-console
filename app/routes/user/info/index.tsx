@@ -1,11 +1,9 @@
-import { Typography, Row, Col, Empty, Card } from '@douyinfe/semi-ui';
+import { Card, Col, Empty, Row, Typography } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 import UserInfoHeader from './UserInfoHeader';
 import MyProject from './MyProject';
 import MyTeam from './MyTeam';
 import LatestNews from './LatestNews';
-
-const { Title, Text } = Typography;
 
 export default function UserInfo() {
   const { t } = useTranslation();
@@ -14,41 +12,43 @@ export default function UserInfo() {
     <>
       <UserInfoHeader />
       <Row gutter={16}>
-        <Col span={16}>
+        <Col xs={12} md={8}>
           <Card bordered={false} className="mt-[16px]">
             <div className="flex justify-between">
-              <Title heading={5}>{t('userInfo.title.project')}</Title>
-              <Text link>{t('userInfo.btn.more')}</Text>
+              <Typography.Title level="h5">{t('userInfo.title.project')}</Typography.Title>
+              <Typography.Text theme="primary" className="cursor-pointer">
+                {t('userInfo.btn.more')}
+              </Typography.Text>
             </div>
             <MyProject />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col xs={12} md={4}>
           <Card bordered={false} className="mt-[16px]">
             <div className="flex justify-between">
-              <Title heading={5}>{t('userInfo.title.team')}</Title>
+              <Typography.Title level="h5">{t('userInfo.title.team')}</Typography.Title>
             </div>
             <MyTeam />
           </Card>
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col span={16}>
+        <Col xs={12} md={8}>
           <Card bordered={false} className="mt-[16px]">
             <div className="flex justify-between">
-              <Title heading={5}>{t('userInfo.title.news')}</Title>
-              <Text link>{t('userInfo.btn.all')}</Text>
+              <Typography.Title level="h5">{t('userInfo.title.news')}</Typography.Title>
+              <Typography.Text theme="primary" className="cursor-pointer">
+                {t('userInfo.btn.all')}
+              </Typography.Text>
             </div>
             <LatestNews />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col xs={12} md={4}>
           <Card bordered={false} className="mt-[16px]">
             <div className="flex justify-between">
-              <Title heading={5}>{t('userInfo.title.notice')}</Title>
+              <Typography.Title level="h5">{t('userInfo.title.notice')}</Typography.Title>
             </div>
-            {/* 空状态：保留原 subTitle 文案与类名 */}
-            {/* / Empty state: keep the original subTitle text and className */}
             <Empty description={t('userInfo.notice.empty')} className="!pt-[60px] !pb-[130px]" />
           </Card>
         </Col>

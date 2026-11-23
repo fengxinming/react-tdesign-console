@@ -1,5 +1,5 @@
-import { Avatar, Space, Skeleton } from '@douyinfe/semi-ui';
-import { IconMapPin, IconHome, IconUser } from '@douyinfe/semi-icons';
+import { Avatar, Skeleton, Space } from 'tdesign-react';
+import { HomeIcon, LocationIcon, UserIcon } from 'tdesign-icons-react';
 import { useUserStore } from '~/store';
 import type { UserText } from './types';
 import styles from './style.module.styl';
@@ -7,12 +7,7 @@ import styles from './style.module.styl';
 function Text({ loading, children }: UserText) {
   return (
     <span className={styles['user-msg-text']}>
-      <Skeleton
-        className="inline-block"
-        loading={loading}
-        active
-        placeholder={<Skeleton.Paragraph rows={1} />}
-      >
+      <Skeleton loading={loading} animation="gradient" rowCol={[1]} className="inline-block">
         {children}
       </Skeleton>
     </span>
@@ -26,31 +21,29 @@ export default function UserInfoHeader() {
 
   return (
     <div className={styles.header}>
-      <Space spacing={8} vertical align="center" className={styles['header-content']}>
+      <Space direction="vertical" size={8} align="center" className={styles['header-content']}>
         <Skeleton
           loading={loading}
-          active
-          placeholder={<Skeleton.Avatar shape="circle" size="large" />}
+          animation="gradient"
+          rowCol={[{ size: '64px', type: 'circle' }]}
         >
-          <Avatar size="large">
-            <img src={userInfo?.avatar} alt="avatar" />
-          </Avatar>
+          <Avatar size="large" image={userInfo?.avatar} />
         </Skeleton>
-        <Skeleton loading={loading} active placeholder={<Skeleton.Paragraph rows={1} />}>
+        <Skeleton loading={loading} animation="gradient" rowCol={[1]}>
           <div className="font-medium text-[16px]/[24px]">{userInfo?.name}</div>
         </Skeleton>
         <div className={styles['user-msg']}>
-          <Space spacing={18}>
+          <Space size={18}>
             <div className={styles['user-msg']}>
-              <IconUser />
+              <UserIcon />
               <Text loading={loading}>{userInfo?.jobName}</Text>
             </div>
             <div className={styles['user-msg']}>
-              <IconHome />
+              <HomeIcon />
               <Text loading={loading}>{userInfo?.organizationName}</Text>
             </div>
             <div className={styles['user-msg']}>
-              <IconMapPin />
+              <LocationIcon />
               <Text loading={loading}>{userInfo?.locationName}</Text>
             </div>
           </Space>

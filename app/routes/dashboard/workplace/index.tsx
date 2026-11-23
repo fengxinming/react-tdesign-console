@@ -1,4 +1,4 @@
-import { Row, Col, Space } from '@douyinfe/semi-ui';
+import { Row, Col, Space } from 'tdesign-react';
 import {
   fetchPopularContents,
   fetchContentPercentage,
@@ -27,21 +27,21 @@ export async function loader(): Promise<WorkplaceLoaderData> {
 export default function Workplace() {
   return (
     <div className={`${styles.workplace} flex w-full`}>
-      <Space spacing={16} vertical className={styles.left} style={{ alignItems: 'stretch' }}>
+      <Space direction="vertical" size={16} className={styles.left} style={{ alignItems: 'stretch' }}>
         <Overview />
         <Row gutter={16}>
-          <Col span={12}>
+          <Col xs={12} md={6} className={styles['split-col']}>
             <PopularContents />
           </Col>
-          <Col span={12}>
+          <Col xs={12} md={6} className={styles['split-col']}>
             <ContentPercentage />
           </Col>
         </Row>
       </Space>
       <Space
         className={styles.right}
-        spacing={16}
-        vertical
+        direction="vertical"
+        size={16}
         style={{ alignItems: 'stretch' }}
       >
         <Shortcuts />

@@ -20,7 +20,7 @@ export default function Logo() {
         <rect x="10" y="14" width="14" height="14" rx="3" fill="#10B981" />
         <rect x="18" y="4" width="12" height="12" rx="3" fill="#F59E0B" />
       </svg>
-      <div className={styles['logo-name']}>React Semi Console</div>
+      <div className={styles['logo-name']}>React TDesign Console</div>
     </div>
   );
 }

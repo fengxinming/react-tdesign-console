@@ -1,12 +1,12 @@
 .wrapper
   margin-top 16px
 
-  // Semi 栅格：Row = .semi-row，Col = .semi-col
-  // / Semi grid: Row = .semi-row, Col = .semi-col
-  :global(.semi-row)
+  // TDesign 栅格：Row = .t-row，Col = .t-col
+  // / TDesign grid: Row = .t-row, Col = .t-col
+  :global(.t-row)
     align-items stretch
 
-  :global(.semi-col)
+  :global(.t-col)
     display flex
     flex-direction column
 
@@ -44,12 +44,12 @@
   .compare-yesterday-text
     font-size 12px
     font-weight 400
-    color var(--semi-color-text-1)
+    color var(--td-text-color-secondary)
 
   .diff
     margin-left 8px
     line-height 20px
-    color var(--semi-color-danger)
+    color var(--td-error-color)
 
   .diff-increment
-    color var(--semi-color-success)
+    color var(--td-success-color)

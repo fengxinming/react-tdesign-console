@@ -1,7 +1,7 @@
 import './styles/global.css';
 import './styles/app.styl';
-// React 19 必须在任何 Semi 组件渲染前注入 createRoot（Toast/Modal/Nav 等依赖）。
-import '@douyinfe/semi-ui/react19-adapter';
+// TDesign 需要 React 19 适配（Message/Dialog 等命令式组件依赖）。
+import 'tdesign-react/es/_util/react-19-adapter';
 import { createRoot } from 'react-dom/client';
 import { createHashRouter, RouterProvider } from 'react-router';
 import { routes } from './routes';

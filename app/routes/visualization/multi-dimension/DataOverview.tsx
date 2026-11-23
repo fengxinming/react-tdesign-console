@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { Card, Typography, Row, Col, Skeleton } from '@douyinfe/semi-ui';
-import { IconUser, IconEdit, IconHeartStroked, IconLikeThumb } from '@douyinfe/semi-icons';
+import { Card, Col, Row, Skeleton, Typography } from 'tdesign-react';
+import { EditIcon, HeartIcon, ThumbUpIcon, UserIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData, useNavigation } from 'react-router';
 import { VChart } from '@visactor/react-vchart';
@@ -8,8 +8,6 @@ import { useSettingsStore } from '~/store';
 import { makeSpec } from '~/commons/vchart';
 import type { MultiDimensionLoaderData } from './types';
 import styles from './style.module.styl';
-
-const { Title } = Typography;
 
 const lineColors = ['#722ED1', '#33D1C9', '#F77234', '#165DFF'];
 
@@ -26,28 +24,28 @@ export default function DataOverview() {
     return [
       {
         title: 'multiDAnalysis.dataOverview.contentProduction',
-        icon: <IconEdit />,
+        icon: <EditIcon />,
         value: overviewValues[0],
         background: '#ffe7ba',
         color: '#fa8c16',
       },
       {
         title: 'multiDAnalysis.dataOverview.contentClicks',
-        icon: <IconLikeThumb />,
+        icon: <ThumbUpIcon />,
         value: overviewValues[1],
         background: '#b5f5ec',
         color: '#13c2c2',
       },
       {
         title: 'multiDAnalysis.dataOverview.contextExposure',
-        icon: <IconHeartStroked />,
+        icon: <HeartIcon />,
         value: overviewValues[2],
-        background: 'var(--semi-color-primary-light-default)',
-        color: 'var(--semi-color-primary)',
+        background: 'var(--td-brand-color-light)',
+        color: 'var(--td-brand-color)',
       },
       {
         title: 'multiDAnalysis.dataOverview.activeUsers',
-        icon: <IconUser />,
+        icon: <UserIcon />,
         value: overviewValues[3],
         background: '#f9f0ff',
         color: '#722ed1',
@@ -80,12 +78,12 @@ export default function DataOverview() {
 
   return (
     <Card bordered={false} className="w-full">
-      <Title heading={5}>{t('multiDAnalysis.card.title.dataOverview')}</Title>
+      <Typography.Title level="h5">{t('multiDAnalysis.card.title.dataOverview')}</Typography.Title>
       <Row justify="space-between">
         {formattedData.map((item) => (
-          <Col span={24 / formattedData.length} key={item.title}>
+          <Col xs={6} md={12 / formattedData.length} key={item.title}>
             <Card bordered={false} className={styles['stat-item']}>
-              <Title heading={5}>{t(item.title)}</Title>
+              <Typography.Title level="h5">{t(item.title)}</Typography.Title>
               <div className={styles.content}>
                 <div
                   style={{ backgroundColor: item.background, color: item.color }}
@@ -93,14 +91,14 @@ export default function DataOverview() {
                 >
                   {item.icon}
                 </div>
-                <Skeleton loading={loading} active className="w-[120px]">
+                <Skeleton loading={loading} animation="gradient" rowCol={[1]} className="w-[120px]">
                   <span className={styles.skeleton}>{Number(item.value ?? 0).toLocaleString()}</span>
                 </Skeleton>
               </div>
             </Card>
           </Col>
         ))}
-        <Col span={24}>
+        <Col span={12}>
           <div className="h-[360px] chart-wrapper">
             <VChart spec={lineSpec} />
           </div>

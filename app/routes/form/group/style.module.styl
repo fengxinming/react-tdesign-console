@@ -1,17 +1,22 @@
 .container
   overflow hidden
 
-  // Semi Card：卡片根 .semi-card，卡体 .semi-card-body
-  // / Semi Card: card root .semi-card, card body .semi-card-body
-  :global(.semi-card-body)
+  // TDesign Card：卡片根 .t-card，卡体 .t-card__body
+  // / TDesign Card: card root .t-card, card body .t-card__body
+  :global(.t-card__body)
     padding 20px 20px 10px
 
-  :global(.semi-card)
+  :global(.t-card)
     margin-bottom 16px
+
+  // 卡片内多行字段的纵向间距；TDesign 会把每个 Col 内的 FormItem 标成 last，默认 margin 为 0
+  // Vertical spacing between form rows inside a card
+  :global(.t-row + .t-row)
+    margin-top 24px
 
 .actions
   padding 12px 40px
-  background-color var(--semi-color-bg-0)
+  background-color var(--td-bg-color-container)
   display flex
   flex-direction row-reverse
   position fixed

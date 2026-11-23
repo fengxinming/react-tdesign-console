@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Tabs, TabPane } from '@douyinfe/semi-ui';
+import { Card, Tabs } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 import InfoHeader from './InfoHeader';
 import InfoForm from './InfoForm';
@@ -17,27 +17,27 @@ export default function UserSetting() {
         <InfoHeader />
       </Card>
       <Card bordered={false} className="mt-[16px]">
-        {/* Semi Tabs 没有 items，用 tabList + TabPane children */}
-        {/* / Semi Tabs has no `items`; use tabList plus TabPane children */}
         <Tabs
-          activeKey={activeTab}
-          onChange={setActiveTab}
-          tabList={[
-            { itemKey: 'basic', tab: t('userSetting.title.basicInfo') },
-            { itemKey: 'security', tab: t('userSetting.title.security') },
-            { itemKey: 'verified', tab: t('userSetting.label.verified') },
+          value={activeTab}
+          onChange={(value) => setActiveTab(value as string)}
+          list={[
+            {
+              value: 'basic',
+              label: t('userSetting.title.basicInfo'),
+              panel: <InfoForm />,
+            },
+            {
+              value: 'security',
+              label: t('userSetting.title.security'),
+              panel: <Security />,
+            },
+            {
+              value: 'verified',
+              label: t('userSetting.label.verified'),
+              panel: <Verified />,
+            },
           ]}
-        >
-          <TabPane itemKey="basic">
-            <InfoForm />
-          </TabPane>
-          <TabPane itemKey="security">
-            <Security />
-          </TabPane>
-          <TabPane itemKey="verified">
-            <Verified />
-          </TabPane>
-        </Tabs>
+        />
       </Card>
     </div>
   );

@@ -1,6 +1,5 @@
-import { Dropdown, Toast } from '@douyinfe/semi-ui';
-import type { DropDownMenuItem } from '@douyinfe/semi-ui/lib/es/dropdown';
-import { IconGlobe } from '@douyinfe/semi-icons';
+import { Dropdown, MessagePlugin } from 'tdesign-react';
+import { TranslateIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '~/store';
 import IconButton from './IconButton';
@@ -13,22 +12,22 @@ export default function LangSelect() {
 
   const select = (lang: Language) => {
     setSettings({ lang });
-    Toast.info({ content: t('settings.language.tip') });
+    void MessagePlugin.info(t('settings.language.tip'));
   };
 
-  const menu: DropDownMenuItem[] = [
-    { node: 'item', name: '中文', selected: language === 'zh-CN', onClick: () => select('zh-CN') },
-    {
-      node: 'item',
-      name: 'English',
-      selected: language === 'en-US',
-      onClick: () => select('en-US'),
-    },
+  const options = [
+    { value: 'zh-CN', content: '中文', active: language === 'zh-CN' },
+    { value: 'en-US', content: 'English', active: language === 'en-US' },
   ];
 
   return (
-    <Dropdown trigger="hover" showTick menu={menu}>
-      <IconButton icon={<IconGlobe />} />
+    <Dropdown
+      trigger="hover"
+      placement="bottom-right"
+      options={options}
+      onClick={(option) => select(String(option.value) as Language)}
+    >
+      <IconButton icon={<TranslateIcon />} />
     </Dropdown>
   );
 }

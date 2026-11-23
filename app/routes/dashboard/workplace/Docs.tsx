@@ -1,12 +1,12 @@
-import { Card, Typography } from '@douyinfe/semi-ui';
+import { Card, Typography } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.styl';
 
 const links: Record<string, string> = {
-  react: 'https://semi.design/en-US/start/getting-started',
-  components: 'https://semi.design/en-US/components/overview',
-  theme: 'https://semi.design/en-US/start/customize-theme',
-  github: 'https://github.com/DouyinFE/semi-design',
+  react: 'https://tdesign.tencent.com/react/getting-started',
+  components: 'https://tdesign.tencent.com/react/components/overview',
+  theme: 'https://tdesign.tencent.com/react/customize-theme',
+  github: 'https://github.com/Tencent/tdesign-react',
 };
 
 export default function Docs() {
@@ -15,18 +15,20 @@ export default function Docs() {
   return (
     <Card bordered={false}>
       <div className="flex justify-between">
-        <Typography.Title heading={5}>{t('workplace.docs')}</Typography.Title>
-        <Typography.Text link>{t('workplace.seeMore')}</Typography.Text>
+        <Typography.Title level="h5">{t('workplace.docs')}</Typography.Title>
+        <Typography.Text theme="primary">{t('workplace.seeMore')}</Typography.Text>
       </div>
       <div className={styles.docs}>
         {Object.entries(links).map(([key, href]) => (
-          <Typography.Text
-            link={{ href, target: '_blank' }}
+          <a
+            href={href}
+            target="_blank"
+            rel="noreferrer"
             key={key}
             className={styles['doc-link']}
           >
             {t(`workplace.${key}`)}
-          </Typography.Text>
+          </a>
         ))}
       </div>
     </Card>

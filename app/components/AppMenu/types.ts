@@ -1,12 +1,10 @@
-import type { NavProps } from '@douyinfe/semi-ui/lib/es/navigation';
 import type { MenuRoute } from '~/config/types';
 
-/** 菜单排列模式：直接复用 Semi Nav 的 mode（vertical=侧边展开，horizontal=顶部）
- *  / Menu mode: reuse Semi `Nav`'s own mode (vertical = sider, horizontal = top bar) */
-export type MenuMode = NonNullable<NavProps['mode']>;
+/** 菜单排列模式：vertical=侧边导航，horizontal=顶部导航 */
+export type MenuMode = 'vertical' | 'horizontal';
 
 export interface AppMenuProps {
-  /** 排列模式，直接透传给 Semi Nav / Passed straight through to Semi Nav */
+  /** 排列模式，透传给 TDesign Menu / 透传给 TDesign Menu */
   mode?: MenuMode;
   /** 折叠状态（vertical 模式）/ Collapsed state (vertical mode) */
   collapse?: boolean;

@@ -1,4 +1,4 @@
-import { Row, Col, Space } from '@douyinfe/semi-ui';
+import { Col, Row, Space } from 'tdesign-react';
 import {
   fetchMultiOverview,
   fetchMultiActivity,
@@ -28,25 +28,25 @@ export async function loader(): Promise<MultiDimensionLoaderData> {
 
 export default function MultiDimension() {
   return (
-    <Space spacing={16} vertical className="w-full" style={{ alignItems: 'stretch' }}>
+    <Space direction="vertical" size={16} className="w-full" style={{ alignItems: 'stretch' }}>
       <div className={styles['top-row']}>
         <Row gutter={20}>
-          <Col span={16}>
+          <Col xs={12} md={8}>
             <DataOverview />
           </Col>
-          <Col span={8}>
+          <Col xs={12} md={4}>
             <ActivityBar />
             <ThemeRadar />
           </Col>
         </Row>
       </div>
       <Row>
-        <Col span={24}>
+        <Col span={12}>
           <CardList />
         </Col>
       </Row>
       <Row>
-        <Col span={24}>
+        <Col span={12}>
           <SourcePie />
         </Col>
       </Row>

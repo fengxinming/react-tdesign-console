@@ -1,11 +1,13 @@
 import { useRef, useState, useCallback } from 'react';
-import { Form, Typography, Button, Space, Toast } from '@douyinfe/semi-ui';
-import { IconLock, IconUser } from '@douyinfe/semi-icons';
+import { Button, Form, Input, MessagePlugin, Space, Typography } from 'tdesign-react';
+import type { InputProps } from 'tdesign-react';
+import { LockOnIcon, UserIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { useLogin } from '~/hooks/api/useAuth';
 import styles from './style.module.styl';
 import type { LoginValues } from '~/api/types';
+import type { ReactElement } from 'react';
 
 /** 登录表单：账号/密码（必填校验）+ 登录/注册。 */
 export default function LoginForm() {
@@ -26,19 +28,25 @@ export default function LoginForm() {
     lockedRef.current = true;
     setLogging(true);
     try {
-      let values: LoginValues;
-      try {
-        values = await form.validate();
-      } catch {
-        // 校验不通过，Semi 已在字段下展示错误
+      const valid = await form.validate();
+      if (valid !== true) {
         return;
       }
       // useLogin 内部已 setToken + 预取用户数据
-      await login(values);
-      Toast.success(t('login.success'));
+      await login(form.getFieldsValue(true) as LoginValues);
+      void MessagePlugin.success(t('login.success'));
       navigate('/dashboard/workplace');
     } catch (err) {
-      form.setError('account', err instanceof Error ? err.message : t('login.form.login.errMsg'));
+      form.setFields([
+        {
+          name: 'account',
+          status: 'error',
+          validateMessage: {
+            type: 'error',
+            message: err instanceof Error ? err.message : t('login.form.login.errMsg'),
+          },
+        },
+      ]);
     } finally {
       lockedRef.current = false;
       setLogging(false);
@@ -53,40 +61,59 @@ export default function LoginForm() {
         className="!mt-[32px]"
         form={form}
         layout="vertical"
-        initValues={{ account: 'admin', password: 'admin' }}
+        initialData={{ account: 'admin', password: 'admin' }}
       >
-        <Form.Input
-          field="account"
+        <Form.FormItem
+          name="account"
           rules={[{ required: true, message: t('login.form.userName.errMsg') }]}
-          prefix={<IconUser />}
-          placeholder={t('login.form.userName.placeholder')}
-          onEnterPress={onSubmitClick}
-        />
-        <Form.Input
-          field="password"
-          mode="password"
+        >
+          <InputWithIcon
+            icon={<UserIcon />}
+            placeholder={t('login.form.userName.placeholder')}
+            onEnter={onSubmitClick}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          name="password"
           rules={[{ required: true, message: t('login.form.password.errMsg') }]}
-          prefix={<IconLock />}
-          placeholder={t('login.form.password.placeholder')}
-          onEnterPress={onSubmitClick}
-        />
-        <Space spacing={16} vertical className="w-full" style={{ alignItems: 'stretch' }}>
-          {/* 「记住密码」已移除：模板页的占位功能，且明文记住密码本身不安全。
-              这一行现在只剩「忘记密码」，右对齐以维持原来的视觉节奏。
-              / "Remember password" was removed: it was a template placeholder, and remembering a
-              password in plaintext is insecure anyway. This row now holds only the "forgot
-              password" link, right-aligned to keep the original visual rhythm. */}
+        >
+          <InputWithIcon
+            icon={<LockOnIcon />}
+            type="password"
+            placeholder={t('login.form.password.placeholder')}
+            onEnter={onSubmitClick}
+          />
+        </Form.FormItem>
+        <Space direction="vertical" size={16} className="w-full" style={{ alignItems: 'stretch' }}>
+          {/* 「记住密码」已移除，保留「忘记密码」右对齐。 */}
           <div className="flex items-center justify-end">
-            <Typography.Text link>{t('login.form.forgetPassword')}</Typography.Text>
+            <Typography.Text theme="primary">{t('login.form.forgetPassword')}</Typography.Text>
           </div>
-          <Button type="primary" theme="solid" block onClick={onSubmitClick} loading={logging}>
+          <Button theme="primary" block onClick={onSubmitClick} loading={logging}>
             {t('login.form.login')}
           </Button>
-          <Button theme="borderless" type="tertiary" block className={styles['login-form-register-btn']}>
+          <Button variant="text" block className={styles['login-form-register-btn']}>
             {t('login.form.register')}
           </Button>
         </Space>
       </Form>
     </div>
+  );
+}
+
+function InputWithIcon({
+  icon,
+  onEnter,
+  ...rest
+}: Omit<InputProps, 'onEnter'> & { icon: ReactElement; onEnter: () => void }) {
+  return (
+    <Input
+      prefixIcon={icon}
+      {...rest}
+      onEnter={(_value, context) => {
+        context.e.preventDefault();
+        onEnter();
+      }}
+    />
   );
 }

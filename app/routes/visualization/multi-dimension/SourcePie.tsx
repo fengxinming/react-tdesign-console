@@ -1,5 +1,5 @@
 import { VChart } from '@visactor/react-vchart';
-import { Typography, Card } from '@douyinfe/semi-ui';
+import { Card, Typography } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData } from 'react-router';
 import { useSettingsStore } from '~/store';
@@ -7,8 +7,6 @@ import { makeSpec } from '~/commons/vchart';
 import type { ContentSourceItem } from '~/api/types';
 import type { MultiDimensionLoaderData } from './types';
 import styles from './style.module.styl';
-
-const { Title } = Typography;
 
 // 5 种 type 的固定配色(手写图例与各环饼共用,保证颜色一致)
 const SOURCE_COLORS = ['#249eff', '#846BCE', '#21CCFF', '#86DF6C', '#0E42D2'];
@@ -23,7 +21,7 @@ export default function SourcePie() {
 
   return (
     <Card bordered={false} className="w-full">
-      <Title heading={5}>{t('multiDAnalysis.card.title.contentSource')}</Title>
+      <Typography.Title level="h5">{t('multiDAnalysis.card.title.contentSource')}</Typography.Title>
       <div className="min-h-[240px]">
         <div className="flex">
           {categories.map((cat) => {

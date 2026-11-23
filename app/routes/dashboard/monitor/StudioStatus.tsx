@@ -1,4 +1,4 @@
-import { Card, Typography, Tag, Space, Descriptions } from '@douyinfe/semi-ui';
+import { Card, Descriptions, Space, Tag, Typography } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 
 export default function StudioStatus() {
@@ -6,7 +6,7 @@ export default function StudioStatus() {
 
   const dataStatus = [
     {
-      key: (
+      label: (
         <span>
           <Typography.Text className="pr-[8px]">
             {t('monitor.studioStatus.mainstream')}
@@ -14,14 +14,14 @@ export default function StudioStatus() {
           {t('monitor.studioStatus.bitRate')}
         </span>
       ),
-      value: '6 Mbps',
+      content: '6 Mbps',
     },
     {
-      key: t('monitor.studioStatus.frameRate'),
-      value: '60',
+      label: t('monitor.studioStatus.frameRate'),
+      content: '60',
     },
     {
-      key: (
+      label: (
         <span>
           <Typography.Text className="pr-[8px]">
             {t('monitor.studioStatus.hotStandby')}
@@ -29,14 +29,14 @@ export default function StudioStatus() {
           {t('monitor.studioStatus.bitRate')}
         </span>
       ),
-      value: '6 Mbps',
+      content: '6 Mbps',
     },
     {
-      key: t('monitor.studioStatus.frameRate'),
-      value: '60',
+      label: t('monitor.studioStatus.frameRate'),
+      content: '60',
     },
     {
-      key: (
+      label: (
         <span>
           <Typography.Text className="pr-[8px]">
             {t('monitor.studioStatus.coldStandby')}
@@ -44,34 +44,34 @@ export default function StudioStatus() {
           {t('monitor.studioStatus.bitRate')}
         </span>
       ),
-      value: '6 Mbps',
+      content: '6 Mbps',
     },
     {
-      key: t('monitor.studioStatus.frameRate'),
-      value: '60',
+      label: t('monitor.studioStatus.frameRate'),
+      content: '60',
     },
   ];
 
   const dataPicture = [
-    { key: t('monitor.studioStatus.line'), value: '热备' },
-    { key: 'CDN', value: 'KS' },
-    { key: t('monitor.studioStatus.play'), value: 'FLV' },
-    { key: t('monitor.studioStatus.pictureQuality'), value: '原画' },
+    { label: t('monitor.studioStatus.line'), content: '热备' },
+    { label: 'CDN', content: 'KS' },
+    { label: t('monitor.studioStatus.play'), content: 'FLV' },
+    { label: t('monitor.studioStatus.pictureQuality'), content: '原画' },
   ];
 
   return (
     <Card bordered={false}>
       <Space align="start">
-        <Typography.Title heading={5}>
+        <Typography.Title level="h5">
           {t('monitor.studioStatus.title.studioStatus')}
         </Typography.Title>
-        <Tag color="green">{t('monitor.studioStatus.smooth')}</Tag>
+        <Tag theme="success">{t('monitor.studioStatus.smooth')}</Tag>
       </Space>
-      <Descriptions layout="horizontal" data={dataStatus} column={2} />
-      <Typography.Title className="!mt-[24px]" heading={5}>
+      <Descriptions layout="horizontal" items={dataStatus} column={2} />
+      <Typography.Title className="!mt-[24px]" level="h5">
         {t('monitor.studioStatus.title.pictureInfo')}
       </Typography.Title>
-      <Descriptions layout="horizontal" data={dataPicture} column={2} />
+      <Descriptions layout="horizontal" items={dataPicture} column={2} />
     </Card>
   );
 }

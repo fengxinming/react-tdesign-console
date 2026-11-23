@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { Typography, Row, Col, Card, Skeleton } from '@douyinfe/semi-ui';
-import { IconAscend, IconDescend } from '@douyinfe/semi-icons';
+import { Card, Col, Row, Skeleton, Typography } from 'tdesign-react';
+import { ArrowDownIcon, ArrowUpIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData, useNavigation } from 'react-router';
 import { VChart } from '@visactor/react-vchart';
@@ -10,8 +10,6 @@ import cs from 'classnames';
 import type { CardBlockData } from '~/api/types';
 import type { MultiDimensionLoaderData } from './types';
 import styles from './style.module.styl';
-
-const { Title } = Typography;
 
 function CardBlock(props: CardBlockData) {
   const { chartType, title, count, increment, diff, chartData, loading } = props;
@@ -63,18 +61,18 @@ function CardBlock(props: CardBlockData) {
   return (
     <Card bordered={false} className={styles['card-block']}>
       <div className="flex flex-col">
-        <Title heading={5} className="!m-0">
+        <Typography.Title level="h5" className="!m-0">
           {title}
-        </Title>
+        </Typography.Title>
         <div className="flex items-center">
-          <Skeleton loading={loading} active>
+          <Skeleton loading={loading} animation="gradient" rowCol={[1]}>
             <span
               className={cs(styles['diff'], {
                 [styles['diff-increment']]: increment,
               })}
             >
               {diff}
-              {increment ? <IconAscend /> : <IconDescend />}
+              {increment ? <ArrowUpIcon /> : <ArrowDownIcon />}
             </span>
           </Skeleton>
           <span className={cs(styles.value, 'ml-[8px]')}>
@@ -107,7 +105,7 @@ export default function CardList() {
   return (
     <Row gutter={16}>
       {formatData.map((item) => (
-        <Col span={6} key={item.name}>
+        <Col xs={12} md={3} key={item.name}>
           <CardBlock key={item.name} {...item} loading={loading} />
         </Col>
       ))}

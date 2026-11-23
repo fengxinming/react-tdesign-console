@@ -1,75 +1,77 @@
-import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table/interface';
-import { Button, Typography, Badge } from '@douyinfe/semi-ui';
-import { IconFile, IconVideo, IconImage } from '@douyinfe/semi-icons';
+import type { PrimaryTableCol } from 'tdesign-react';
+import { Badge, Button, Typography } from 'tdesign-react';
+import { FileIcon, VideoIcon, ImageIcon } from 'tdesign-icons-react';
 import dayjs from 'dayjs';
 import styles from './style.module.styl';
 import type { T } from './types';
-
-const { Text } = Typography;
 
 export const ContentType = ['图文', '横版短视频', '竖版短视频'];
 export const FilterType = ['规则筛选', '人工'];
 export const Status = ['未上线', '已上线'];
 
-const ContentIcon = [<IconFile key={0} />, <IconVideo key={1} />, <IconImage key={2} />];
+const ContentIcon = [<FileIcon key={0} />, <VideoIcon key={1} />, <ImageIcon key={2} />];
 
 export function getColumns(
   t: T,
   callback: (record: Record<string, any>, type: string) => void,
-): ColumnProps<Record<string, any>>[] {
+): PrimaryTableCol<Record<string, any>>[] {
   return [
     {
       title: t('searchTable.columns.id'),
-      dataIndex: 'id',
-      render: (value: string) => <Text copyable>{value}</Text>,
+      colKey: 'id',
+      cell: ({ row }) => <Typography.Text copyable>{row.id}</Typography.Text>,
     },
     {
       title: t('searchTable.columns.name'),
-      dataIndex: 'name',
+      colKey: 'name',
     },
     {
       title: t('searchTable.columns.contentType'),
-      dataIndex: 'contentType',
-      render: (value: number) => (
+      colKey: 'contentType',
+      cell: ({ row }) => (
         <div className={styles['content-type']}>
-          {ContentIcon[value]}
-          {ContentType[value]}
+          {ContentIcon[row.contentType]}
+          {ContentType[row.contentType]}
         </div>
       ),
     },
     {
       title: t('searchTable.columns.filterType'),
-      dataIndex: 'filterType',
-      render: (value: number) => FilterType[value],
+      colKey: 'filterType',
+      cell: ({ row }) => FilterType[row.filterType],
     },
     {
       title: t('searchTable.columns.contentNum'),
-      dataIndex: 'count',
-      sorter: (a: any, b: any) => a.count - b.count,
-      render: (x: number) => Number(x).toLocaleString(),
+      colKey: 'count',
+      sorter: (a, b) => a.count - b.count,
+      cell: ({ row }) => Number(row.count).toLocaleString(),
     },
     {
       title: t('searchTable.columns.createdTime'),
-      dataIndex: 'createdTime',
-      render: (x: number) => dayjs().subtract(x, 'days').format('YYYY-MM-DD HH:mm:ss'),
-      sorter: (a: any, b: any) => b.createdTime - a.createdTime,
+      colKey: 'createdTime',
+      sorter: (a, b) => b.createdTime - a.createdTime,
+      cell: ({ row }) => dayjs().subtract(row.createdTime, 'days').format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: t('searchTable.columns.status'),
-      dataIndex: 'status',
-      render: (x: number) => (
+      colKey: 'status',
+      cell: ({ row }) => (
         <span className="inline-flex items-center gap-2">
-          <Badge dot type={x === 0 ? 'danger' : 'success'} />
-          <Text>{Status[x]}</Text>
+          <Badge dot color={row.status === 0 ? '#e34d59' : '#00a870'} />
+          <Typography.Text>{Status[row.status]}</Typography.Text>
         </span>
       ),
     },
     {
       title: t('searchTable.columns.operations'),
-      dataIndex: 'operations',
-      onHeaderCell: () => ({ style: { paddingLeft: '15px' } }),
-      render: (_: unknown, record: Record<string, any>) => (
-        <Button theme="borderless" type="tertiary" size="small" onClick={() => callback(record, 'view')}>
+      colKey: 'operations',
+      cell: ({ row }) => (
+        <Button
+          theme="default"
+          variant="text"
+          size="small"
+          onClick={() => callback(row, 'view')}
+        >
           {t('searchTable.columns.operations.view')}
         </Button>
       ),

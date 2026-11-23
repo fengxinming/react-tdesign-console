@@ -3,34 +3,34 @@ import i18n from '~/i18n';
 import type { Language, Theme } from '~/store/types';
 
 /**
- * 切换明暗：给 body 增删 theme-mode="dark"。
- * Semi 在 body 下同时挂载亮/暗两套色盘，靠这个属性切换（官方机制）。
- * 浮层（Toast/Tooltip/Popover 等 portal 到 body）因此自动跟随明暗。
+ * 切换明暗：TDesign 在 html 上挂亮/暗色盘，靠 html[theme-mode] 切换。
  */
 export function setTheme(theme: Theme) {
   if (theme === 'dark') {
-    document.body.setAttribute('theme-mode', 'dark');
+    document.documentElement.setAttribute('theme-mode', 'dark');
   } else {
-    document.body.removeAttribute('theme-mode');
+    document.documentElement.removeAttribute('theme-mode');
   }
 }
 
 /**
- * 主题色：把主色及其色阶写入 body 的 --semi-color-primary 系列变量。
- * Semi 组件从这些 CSS 变量取色，运行时覆盖即可换肤，无需重编译主题包。
- * 色阶由 @ant-design/colors 的 generate 生成 10 档，取其中几档映射到 Semi 的 hover/active/light。
+ * 主题色：只写 TDesign 的主色变量。
+ * 色阶仍由 @ant-design/colors 生成，不另造色板。
  */
 export function setThemeColor(themeColor: string, theme: Theme) {
   const palette = generate(themeColor, { theme: theme === 'dark' ? 'dark' : 'default' });
-  const body = document.body.style;
-  body.setProperty('--semi-color-primary', themeColor);
-  // palette[5] 略深、palette[6] 更深；hover/active 取相邻档，保证交互态可辨识
-  body.setProperty('--semi-color-primary-hover', palette[5] ?? themeColor);
-  body.setProperty('--semi-color-primary-active', palette[6] ?? themeColor);
-  // light 系列取浅色档，用于浅色填充背景/文字
-  body.setProperty('--semi-color-primary-light-default', palette[0] ?? themeColor);
-  body.setProperty('--semi-color-primary-light-hover', palette[1] ?? themeColor);
-  body.setProperty('--semi-color-primary-light-active', palette[2] ?? themeColor);
+
+  // TDesign 的主色 token 挂在 html 上；内联变量优先级高于其亮/暗主题声明。
+  const root = document.documentElement.style;
+  palette.forEach((color, index) => {
+    root.setProperty(`--td-brand-color-${index + 1}`, color);
+  });
+  root.setProperty('--td-brand-color', themeColor);
+  root.setProperty('--td-brand-color-hover', palette[5] ?? themeColor);
+  root.setProperty('--td-brand-color-active', palette[6] ?? themeColor);
+  root.setProperty('--td-brand-color-focus', palette[1] ?? themeColor);
+  root.setProperty('--td-brand-color-light', palette[0] ?? themeColor);
+  root.setProperty('--td-brand-color-disabled', palette[3] ?? themeColor);
 }
 
 /**

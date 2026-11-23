@@ -1,12 +1,10 @@
 import { VChart } from '@visactor/react-vchart';
-import { Typography, Card } from '@douyinfe/semi-ui';
+import { Card, Typography } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData } from 'react-router';
 import { useSettingsStore } from '~/store';
 import { makeSpec } from '~/commons/vchart';
 import type { MultiDimensionLoaderData } from './types';
-
-const { Title } = Typography;
 
 /** 内容题材分布:雷达图(按 category 分色)。数据由路由 loader 提供。 */
 export default function ThemeRadar() {
@@ -47,7 +45,7 @@ export default function ThemeRadar() {
 
   return (
     <Card bordered={false}>
-      <Title heading={5}>{t('multiDAnalysis.card.title.contentTheme')}</Title>
+      <Typography.Title level="h5">{t('multiDAnalysis.card.title.contentTheme')}</Typography.Title>
       <div className="w-full h-[215px]">
         <div className="h-[235px] my-[15px]">
           <VChart spec={config} />

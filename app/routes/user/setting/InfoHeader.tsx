@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Avatar, Upload, Descriptions, Tag, Skeleton, Typography } from '@douyinfe/semi-ui';
-import { IconPlus } from '@douyinfe/semi-icons';
+import { Avatar, Descriptions, Skeleton, Tag, Typography, Upload } from 'tdesign-react';
+import { AddIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useUserStore } from '~/store';
+import useMediaQuery from '~/hooks/useMediaQuery';
 import type { InfoTextProps } from './types';
 import styles from './style.module.styl';
 
 function Text({ loading, children }: InfoTextProps) {
   return (
-    <Skeleton loading={loading} active placeholder={<Skeleton.Paragraph rows={1} />}>
+    <Skeleton loading={loading} animation="gradient" rowCol={[1]}>
       {children}
     </Skeleton>
   );
@@ -20,84 +21,77 @@ export default function InfoHeader() {
   const userInfo = useUserStore((s) => s.user);
   const loading = !userInfo;
   const [avatar, setAvatar] = useState('');
+  const wide = useMediaQuery('(min-width: 900px)');
 
   const avatarSrc = avatar || userInfo?.avatar;
-  // Semi Descriptions 没有 styles.label，改用每条 data 的 keyStyle 让 label 右对齐
-  // / Semi Descriptions has no styles.label; use keyStyle on each data item to right-align labels
-  const keyStyle = { textAlign: 'right' as const };
 
   return (
     <div className="flex">
       <Upload
-        action=""
+        autoUpload={false}
         showUploadList={false}
-        beforeUpload={() => false}
-        // 参数类型由 Semi UploadProps 的 onChange 推导，不在本文件内写类型定义
-        // / The argument type is inferred from Semi's UploadProps onChange; no local type definition here
-        onChange={({ currentFile }) => {
-          setAvatar(currentFile.fileInstance ? URL.createObjectURL(currentFile.fileInstance) : '');
+        onChange={(files) => {
+          const raw = files[0]?.raw;
+          setAvatar(raw ? URL.createObjectURL(raw) : '');
         }}
       >
         <Skeleton
           loading={loading}
-          active
-          placeholder={<Skeleton.Avatar shape="circle" size="extra-large" />}
+          animation="gradient"
+          rowCol={[{ size: '64px', type: 'circle' }]}
         >
-          <Avatar size="extra-large">
-            {avatarSrc ? <img src={avatarSrc} alt="avatar" /> : <IconPlus />}
+          <Avatar size="large" image={avatarSrc}>
+            <AddIcon />
           </Avatar>
         </Skeleton>
       </Upload>
       <Descriptions
         className={styles['info-content']}
-        column={2}
-        data={[
+        column={wide ? 2 : 1}
+        tableLayout="auto"
+        labelStyle={{ textAlign: 'right', whiteSpace: 'nowrap' }}
+        items={[
           {
-            key: t('userSetting.label.name'),
-            keyStyle,
-            value: <Text loading={loading}>{userInfo?.name}</Text>,
+            label: t('userSetting.label.name'),
+            content: <Text loading={loading}>{userInfo?.name}</Text>,
           },
           {
-            key: t('userSetting.label.verified'),
-            keyStyle,
-            value: (
+            label: t('userSetting.label.verified'),
+            content: (
               <Text loading={loading}>
                 {userInfo?.verified ? (
-                  <Tag color="green" className={styles['verified-tag']}>
+                  <Tag theme="success" className={styles['verified-tag']}>
                     {t('userSetting.value.verified')}
                   </Tag>
                 ) : (
-                  <Tag color="red" className={styles['verified-tag']}>
+                  <Tag theme="danger" className={styles['verified-tag']}>
                     {t('userSetting.value.notVerified')}
                   </Tag>
                 )}
-                <Typography.Text link role="button" className="ml-[12px]">
+                <Typography.Text theme="primary" role="button" className="ml-[12px]">
                   {t('userSetting.btn.edit')}
                 </Typography.Text>
               </Text>
             ),
           },
           {
-            key: t('userSetting.label.accountId'),
-            keyStyle,
-            value: <Text loading={loading}>{userInfo?.accountId}</Text>,
+            label: t('userSetting.label.accountId'),
+            content: <Text loading={loading}>{userInfo?.accountId}</Text>,
           },
           {
-            key: t('userSetting.label.phoneNumber'),
-            keyStyle,
-            value: (
+            label: t('userSetting.label.phoneNumber'),
+            content: (
               <Text loading={loading}>
                 {userInfo?.phoneNumber}
-                <Typography.Text link role="button" className="ml-[12px]">
+                <Typography.Text theme="primary" role="button" className="ml-[12px]">
                   {t('userSetting.btn.edit')}
                 </Typography.Text>
               </Text>
             ),
           },
           {
-            key: t('userSetting.label.registrationTime'),
-            keyStyle,
-            value: <Text loading={loading}>{userInfo?.registrationTime}</Text>,
+            label: t('userSetting.label.registrationTime'),
+            content: <Text loading={loading}>{userInfo?.registrationTime}</Text>,
           },
         ]}
       />

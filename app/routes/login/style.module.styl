@@ -1,10 +1,10 @@
 .container
   display flex
   height 100vh
-  // 右侧表单区底色：Semi 的容器级底色 token --semi-color-bg-1（浅色 #FFFFFF / 深色自动推导）；
+  // 右侧表单区底色：TDesign 的容器级底色 token --td-bg-color-container（浅色 #FFFFFF / 深色自动推导）；
   // 显式声明，避免依赖 html/body（不在变量作用域内，取不到值）
-  // / right-hand form panel background: Semi's container-level token --semi-color-bg-1
-  background-color var(--semi-color-bg-1)
+  // / right-hand form panel background: TDesign's container-level token --td-bg-color-container
+  background-color var(--td-bg-color-container)
 
   .banner
     width 550px
@@ -36,9 +36,9 @@
     margin-left 4px
     margin-right 4px
     font-size 20px
-    // logo 固定在深色 banner 上，用 Semi 的「实色/深色背景上的文字」token
-    // / the logo sits on the dark banner; Semi's token for text on a solid/dark background
-    color var(--semi-color-white)
+    // logo 固定在深色 banner 上，用 TDesign 的「实色/深色背景上的文字」token
+    // / the logo sits on the dark banner; TDesign's token for text on a solid/dark background
+    color var(--td-text-color-anti)
 
 .banner
   display flex
@@ -62,46 +62,51 @@
     flex-direction column
     justify-content center
     align-items center
-    // Semi Carousel（内部基于 slick）fade 模式下 slide 为 absolute 定位，height:100% 参照链断裂
+    // TDesign Carousel（内部基于 slick）fade 模式下 slide 为 absolute 定位，height:100% 参照链断裂
     // 导致内容贴顶；用 100vh 显式撑满（banner 即 100vh），恢复垂直居中对齐参考站
     // / fade-mode slides are absolutely positioned so height:100% collapses;
     // explicit 100vh restores vertical centering to match the reference site
     height 100vh
 
   &-title
+    padding 0 16px
+    text-align center
     font-weight 500
     font-size 20px
     line-height 28px
-    // 位于深色 banner 上，用 Semi 的 --semi-color-white / text on the dark banner
-    color var(--semi-color-white)
+    // 位于深色 banner 上，用 TDesign 的 --td-font-white-1 / text on the dark banner
+    color var(--td-text-color-anti)
 
   &-sub-title
+    padding 0 16px
+    text-align center
     margin-top 8px
     font-size 14px
     line-height 22px
     // 位于深色 banner 上；同 token 降不透明度表达次级文字
     // / on the dark banner; same token with reduced opacity for secondary emphasis
-    color var(--semi-color-white)
+    color var(--td-text-color-anti)
     opacity 0.65
 
   &-image
     margin-top 30px
-    width 320px
+    width min(320px, 80%)
 
 .login-form
   &-wrapper
     width 320px
+    max-width calc(100% - 32px)
 
   &-title
     font-size 24px
     font-weight 500
-    color var(--semi-color-text-0)
+    color var(--td-text-color-primary)
     line-height 32px
 
   &-sub-title
     font-size 16px
     line-height 24px
-    color var(--semi-color-text-2)
+    color var(--td-text-color-secondary)
 
   &-register-btn
-    color var(--semi-color-text-2) !important
+    color var(--td-text-color-secondary) !important

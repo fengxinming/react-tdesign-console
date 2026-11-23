@@ -25,11 +25,27 @@
     flex none
     width 100%
 
+@media (max-width 767px)
+  .split-col
+    margin-bottom 16px
+
+@media (max-width 600px)
+  .table-col-secondary
+    display none
+
+  .popular-table
+    :global(col:nth-child(3)),
+    :global(col:nth-child(4))
+      display none
+
+    :global(.t-pagination__select)
+      display none
+
 .caret-green
-  color var(--semi-color-success)
+  color var(--td-success-color)
 
 .caret-red
-  color var(--semi-color-danger)
+  color var(--td-error-color)
 
 // Overview 统计项
 .stat
@@ -37,7 +53,10 @@
     display flex
     align-items center
     padding-left 20px
-    color var(--semi-color-text-0)
+    color var(--td-text-color-primary)
+
+    @media (max-width 600px)
+      padding-left 12px
 
   &-icon
     display flex
@@ -45,17 +64,22 @@
     justify-content center
     width 54px
     height 54px
-    background-color var(--semi-color-fill-1)
+    background-color var(--td-bg-color-secondarycontainer)
     border-radius 50%
     margin-right 12px
 
+    @media (max-width 600px)
+      width 44px
+      height 44px
+      margin-right 8px
+
     :global
-      .semi-icon
+      .t-icon
         font-size 27px
 
   &-col
     &:not(:last-child)
-      border-right 1px solid var(--semi-color-border)
+      border-right 1px solid var(--td-component-stroke)
 
     @media (max-width 900px)
       width 50% !important
@@ -68,17 +92,17 @@
 
   &-title
     font-size 12px
-    color var(--semi-color-text-0)
+    color var(--td-text-color-primary)
 
   &-count
     font-size 22px
     font-weight 600
-    color var(--semi-color-text-0)
+    color var(--td-text-color-primary)
 
   &-unit
     font-size 12px
     font-weight 400
-    color var(--semi-color-text-1)
+    color var(--td-text-color-secondary)
     margin-left 8px
 
 .chart
@@ -91,12 +115,12 @@
     font-size 12px
     font-weight 400
     margin-left 4px
-    color var(--semi-color-text-2)
+    color var(--td-text-color-placeholder)
 
 // Overview
 .growth-icon
   font-size 18px
-  color var(--semi-color-success)
+  color var(--td-success-color)
 
 // Shortcuts
 .shortcut
@@ -114,13 +138,13 @@
     cursor pointer
 
     ^[1]:hover ^[0]-icon
-      background-color var(--semi-color-primary-light-default)
+      background-color var(--td-brand-color-light)
 
       svg
-        color var(--semi-color-primary)
+        color var(--td-brand-color)
 
     ^[1]:hover ^[0]-title
-      color var(--semi-color-primary)
+      color var(--td-brand-color)
 
   &-icon
     display flex
@@ -129,7 +153,7 @@
     width 32px
     height 32px
     border-radius 6px
-    background-color var(--semi-color-fill-1)
+    background-color var(--td-bg-color-secondarycontainer)
     margin-bottom 4px
 
     svg
@@ -138,13 +162,13 @@
   &-title
     font-size 12px
     line-height 20px
-    color var(--semi-color-text-0)
+    color var(--td-text-color-primary)
 
 .recent
   font-weight 500
   font-size 16px
   line-height 24px
-  color var(--semi-color-text-0)
+  color var(--td-text-color-primary)
   margin-bottom 16px
 
 // Carousel
@@ -171,7 +195,7 @@
     text-overflow ellipsis
     white-space nowrap
     margin-left 4px
-    color var(--semi-color-text-1)
+    color var(--td-text-color-secondary)
     text-decoration none
     font-size 13px
     cursor pointer
@@ -182,10 +206,10 @@
   grid-template-columns 50% 50%
 
 .doc-link
-  color var(--semi-color-text-1)
+  color var(--td-text-color-secondary)
   padding 4px
   box-sizing border-box
   margin-bottom 12px
 
   &:hover
-    color var(--semi-color-primary)
+    color var(--td-brand-color)

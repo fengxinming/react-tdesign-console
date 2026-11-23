@@ -1,5 +1,5 @@
-import { Card, Space, Select, Input, Button, Typography, Spin, Empty } from '@douyinfe/semi-ui';
-import { IconDownload, IconEmoji, IconSearch } from '@douyinfe/semi-icons';
+import { Button, Card, Empty, Input, Loading, Select, Space, Typography } from 'tdesign-react';
+import { DownloadIcon, SearchIcon, SmileIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import MessageList from './MessageList';
 import styles from './style.module.styl';
@@ -13,31 +13,34 @@ export default function ChatPanel() {
   return (
     <Card bordered={false} className={styles['chat-panel']}>
       <div className={styles['chat-panel-header']}>
-        <Typography.Title heading={5}>{t('monitor.title.chatPanel')}</Typography.Title>
-        <Space spacing={8}>
+        <Typography.Title level="h5">{t('monitor.title.chatPanel')}</Typography.Title>
+        <Space size={8} breakLine>
           <Select
+            className="!w-[80px]"
             defaultValue="all"
-            // Semi 使用 optionList 属性配置选项，不使用 Select.Option 子组件
-            // / Semi configures options via the optionList prop instead of Select.Option children
-            optionList={[{ value: 'all', label: t('monitor.chat.options.all') }]}
+            options={[{ value: 'all', label: t('monitor.chat.options.all') }]}
           />
           <Input
-            className="w-[150px]"
+            className="!w-[120px]"
             placeholder={t('monitor.chat.placeholder.searchCategory')}
-            suffix={<IconSearch />}
+            suffix={<SearchIcon />}
           />
-          <Button theme="borderless" type="tertiary" icon={<IconDownload />} />
+          <Button className="!px-[7px]" theme="default" variant="text" icon={<DownloadIcon />} />
         </Space>
       </div>
       <div className="flex-1 box-border overflow-y-auto my-[20px]">
-        <Spin spinning={loading} className="w-full">
-          {messageList.length === 0 && !loading ? <Empty /> : <MessageList data={messageList} />}
-        </Spin>
+        {loading ? (
+          <Loading loading size="small" className="w-full" />
+        ) : messageList.length === 0 ? (
+          <Empty />
+        ) : (
+          <MessageList data={messageList} />
+        )}
       </div>
       <div className={styles['chat-panel-footer']}>
-        <Space spacing={8}>
-          <Input suffix={<IconEmoji />} />
-          <Button type="primary" theme="solid">{t('monitor.chat.update')}</Button>
+        <Space size={8}>
+          <Input suffix={<SmileIcon />} />
+          <Button theme="primary">{t('monitor.chat.update')}</Button>
         </Space>
       </div>
     </Card>

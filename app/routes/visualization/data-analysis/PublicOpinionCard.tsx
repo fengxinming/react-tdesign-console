@@ -1,13 +1,11 @@
-import { Skeleton, Typography } from '@douyinfe/semi-ui';
-import { IconAscend, IconDescend } from '@douyinfe/semi-icons';
+import { Skeleton, Typography } from 'tdesign-react';
+import { ArrowDownIcon, ArrowUpIcon } from 'tdesign-icons-react';
 import { VChart } from '@visactor/react-vchart';
 import { useSettingsStore } from '~/store';
 import { makeSpec } from '~/commons/vchart';
 import type { OverviewItem, ChartPoint } from '~/api/types';
 import type { MiniChartProps } from './types';
 import styles from './style.module.styl';
-
-const { Text } = Typography;
 
 type MiniTheme = MiniChartProps['theme'];
 
@@ -113,26 +111,26 @@ export default function PublicOpinionCard(props: OverviewItem) {
   return (
     <div className={className}>
       <div className="whitespace-nowrap w-[100px]">
-        <Typography.Title heading={5} className="m-0">
+        <Typography.Title level="h5" className="m-0">
           {title}
         </Typography.Title>
         <div className={styles.value}>
           {Number(count ?? 0).toLocaleString()}
         </div>
         <div className="flex">
-          <Text type="tertiary" className={styles['compare-yesterday-text']}>
+          <Typography.Text theme="secondary" className={styles['compare-yesterday-text']}>
             {compareTime}
-          </Text>
+          </Typography.Text>
           <span className={`${styles.diff} ${increment ? styles['diff-increment'] : ''}`}>
-            <Skeleton loading={loading} active>
+            <Skeleton loading={loading} animation="gradient" rowCol={[1]}>
               {diff}
-              {increment ? <IconAscend /> : <IconDescend />}
+              {increment ? <ArrowUpIcon /> : <ArrowDownIcon />}
             </Skeleton>
           </span>
         </div>
       </div>
       <div className="flex-1 flex flex-col-reverse">
-        <Skeleton loading={loading} active>
+        <Skeleton loading={loading} animation="gradient" rowCol={[1]}>
           <MiniChart chartType={chartType} chartData={(chartData as ChartPoint[]) ?? []} theme={theme} />
         </Skeleton>
       </div>

@@ -6,7 +6,7 @@
   z-index 99
   box-sizing border-box
   // padding-top 60px
-  background-color var(--semi-color-bg-0)
+  background-color var(--td-bg-color-container)
 
   &.no-header
     padding-top 0
@@ -20,10 +20,10 @@
     border 4px solid transparent
     background-clip padding-box
     border-radius 7px
-    background-color var(--semi-color-text-3)
+    background-color var(--td-text-color-placeholder)
 
   ::-webkit-scrollbar-thumb:hover
-    background-color var(--semi-color-text-2)
+    background-color var(--td-text-color-secondary)
 
   &::after
     content ''
@@ -33,13 +33,10 @@
     right -1px
     width 1px
     height 100%
-    background-color var(--semi-color-border)
+    background-color var(--td-component-stroke)
 
-  // Semi Sider 的内容容器 / Semi Sider content wrapper
-  > :global(.semi-layout-sider-children)
-    position relative
+  > :global(.t-menu)
     height 100%
-    overflow visible
 
   .collapse-btn
     position absolute
@@ -47,18 +44,36 @@
     right -16px
     transform translateY(-50%)
     width 16px
-    height 60px
-    background-color var(--semi-color-fill-0)
-    color var(--semi-color-text-1)
-    clip-path polygon(0 0, 100% 25%, 100% 75%, 0 100%)
+    height 64px
+    background-color var(--td-component-stroke)
+    color var(--td-text-color-primary)
+    clip-path polygon(0 0, 100% 22%, 100% 78%, 0 100%)
     cursor pointer
     display flex
     justify-content center
     align-items center
     z-index 2
 
+    &::before
+      content ''
+      position absolute
+      top 1px
+      right 1px
+      bottom 1px
+      left 0
+      background-color var(--td-bg-color-container)
+      clip-path polygon(0 0, 100% 22%, 100% 78%, 0 100%)
+      z-index 0
+
+    :global(.t-icon)
+      position relative
+      z-index 1
+
     &:hover
-      background-color var(--semi-color-fill-2)
+      background-color var(--td-brand-color)
+
+      &::before
+        background-color var(--td-brand-color-light)
 
 .menu-wrapper
   overflow-y auto
@@ -66,11 +81,11 @@
   height 100%
   box-sizing border-box
 
-  :global(.semi-navigation)
+  :global(.t-menu)
     width 100% !important
     min-width 0
+    height 100%
 
-  // Semi Nav 的子菜单标题 = .semi-navigation-sub-title
-  // / Semi Nav submenu title = .semi-navigation-sub-title
-  :global(.semi-navigation-sub-title)
+  // TDesign 子菜单标题项
+  :global(.t-submenu > .t-menu__item)
     font-weight 500

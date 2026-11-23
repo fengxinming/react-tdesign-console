@@ -1,4 +1,4 @@
-import { TabPane, Tabs } from '@douyinfe/semi-ui';
+import { Tabs } from 'tdesign-react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useLayoutStore } from '~/store';
@@ -14,34 +14,30 @@ function TabBar() {
   const setActive = useLayoutStore((s) => s.setActive);
 
   const tabList = tabs.map((tab) => ({
-    itemKey: tab.key,
-    tab: t(tab.title) ?? tab.title,
-    closable: tab.closable !== false,
+    value: tab.key,
+    label: t(tab.title) ?? tab.title,
+    removable: tab.closable !== false,
   }));
 
   return (
     <div className={styles.tabbar}>
       <Tabs
-        type="card"
-        size="small"
-        collapsible="auto"
-        tabList={tabList}
-        activeKey={activeKey}
+        theme="card"
+        size="medium"
+        list={tabList}
+        value={activeKey}
         onChange={(key) => {
-          setActive(key);
-          navigate(key);
+          const nextKey = String(key);
+          setActive(nextKey);
+          navigate(nextKey);
         }}
-        onTabClose={(key) => {
-          const nextKey = removeTab(key);
+        onRemove={({ value }) => {
+          const nextKey = removeTab(String(value));
           if (nextKey) {
             navigate(nextKey);
           }
         }}
-      >
-        {tabs.map((tab) => (
-          <TabPane key={tab.key} itemKey={tab.key} tab={t(tab.title) ?? tab.title} />
-        ))}
-      </Tabs>
+      />
     </div>
   );
 }

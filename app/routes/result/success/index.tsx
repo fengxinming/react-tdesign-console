@@ -1,45 +1,53 @@
-import { Typography, Button, Steps, Space } from '@douyinfe/semi-ui';
-import { IconTickCircle } from '@douyinfe/semi-icons';
+import { Button, Space, Steps, Typography } from 'tdesign-react';
+import { CheckCircleFilledIcon } from 'tdesign-icons-react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import useMediaQuery from '~/hooks/useMediaQuery';
 import styles from './style.module.styl';
 
 export default function ResultSuccess() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const wide = useMediaQuery('(min-width: 900px)');
 
   return (
     <div>
       <div className={styles.wrapper}>
-        {/* Semi 无 Result，用 Icon + Typography + Space 自行拼装 */}
-        {/* / Semi has no Result; compose it from Icon + Typography + Space */}
         <div className={styles.result + ' text-center'}>
-          <IconTickCircle style={{ fontSize: 64, color: 'var(--semi-color-success)' }} />
-          <Typography.Title heading={3}>{t('success.result.title')}</Typography.Title>
-          <Typography.Paragraph type="secondary" className="my-[8px]">
+          <CheckCircleFilledIcon style={{ fontSize: 64, color: 'var(--td-success-color)' }} />
+          <Typography.Title level="h3">{t('success.result.title')}</Typography.Title>
+          <Typography.Text theme="secondary" className="my-[8px] block">
             {t('success.result.subTitle')}
-          </Typography.Paragraph>
+          </Typography.Text>
           <Space>
-            <Button className="mr-[16px]" onClick={() => window.print()}>
+            <Button
+              className="mr-[16px]"
+              theme="default"
+              variant="outline"
+              onClick={() => window.print()}
+            >
               {t('success.result.printResult')}
             </Button>
-            <Button type="primary" theme="solid" onClick={() => navigate('/dashboard/workplace')}>
+            <Button theme="primary" onClick={() => navigate('/dashboard/workplace')}>
               {t('success.result.projectList')}
             </Button>
           </Space>
         </div>
         <div className={styles['steps-wrapper']}>
-          <Typography.Paragraph strong>{t('success.result.progress')}</Typography.Paragraph>
-          <Steps current={2}>
-            <Steps.Step title={t('success.submitApplication')} description="2020/10/10 14:00:39" />
-            <Steps.Step title={t('success.leaderReview')} description={t('success.processing')} />
-            <Steps.Step
-              title={t('success.purchaseCertificate')}
-              description={t('success.waiting')}
-            />
-            <Steps.Step title={t('success.safetyTest')} description={t('success.waiting')} />
-            <Steps.Step title={t('success.launched')} description={t('success.waiting')} />
-          </Steps>
+          <Typography.Text strong className="block mb-[8px]">
+            {t('success.result.progress')}
+          </Typography.Text>
+          <Steps
+            current={2}
+            layout={wide ? 'horizontal' : 'vertical'}
+            options={[
+              { title: t('success.submitApplication'), content: '2020/10/10 14:00:39' },
+              { title: t('success.leaderReview'), content: t('success.processing') },
+              { title: t('success.purchaseCertificate'), content: t('success.waiting') },
+              { title: t('success.safetyTest'), content: t('success.waiting') },
+              { title: t('success.launched'), content: t('success.waiting') },
+            ]}
+          />
         </div>
       </div>
     </div>

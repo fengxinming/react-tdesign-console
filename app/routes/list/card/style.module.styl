@@ -5,9 +5,9 @@
     // / The old list-content and card-meta-title rules had no matching nodes here
     // (this page uses neither List nor Card.Meta), so they were removed
 
-    // 分组标题由 Semi Typography.Title heading={5} 渲染，对应 h5.semi-typography
-    // / group headings come from Semi Typography.Title heading={5} → h5.semi-typography
-    h5.semi-typography
+    // 分组标题由 TDesign Typography.Title level="h5" 渲染，对应 h5.t-typography
+    // / group headings come from TDesign Typography.Title level="h5" → h5.t-typography
+    h5.t-typography
       font-size 14px
       margin-top 16px
       margin-bottom 12px
@@ -15,9 +15,9 @@
 .card-block
   margin-bottom 16px
 
-  // Semi Card 头部 = .semi-card-header（卡片标题容器，默认 20px 内边距）
-  // / Semi card head = .semi-card-header (title container, 20px padding by default)
-  :global(.semi-card-header)
+  // TDesign Card 头部 = .t-card__header（卡片标题容器，默认内边距）
+  // / TDesign card head = .t-card__header (title container, default padding)
+  :global(.t-card__header)
     height auto
     padding 16px
     padding-bottom 0
@@ -41,15 +41,15 @@
       width 24px
       // 圆形图标底色跟随主题主色，文字用「实底上的文本」token
       // / icon badge follows the theme primary; text uses the on-solid text token
-      color var(--semi-color-white)
-      background var(--semi-color-primary)
+      color var(--td-font-white-1)
+      background var(--td-brand-color)
       text-align center
       line-height 24px
       border-radius 50%
       margin-right 8px
 
     .more
-      color var(--semi-color-text-3)
+      color var(--td-text-color-disabled)
       font-size 16px
       position absolute
       right 16px
@@ -60,26 +60,26 @@
     .more
       opacity 1
 
-  // Semi Descriptions 单元格：标签是 th.semi-descriptions-item-th，内容是 td.semi-descriptions-item-td
-  // / Semi Descriptions cells: label is th.semi-descriptions-item-th, value is td.semi-descriptions-item-td
-  .time, .content > :global(.semi-typography), :global(.semi-descriptions-item-th), :global(.semi-descriptions-item-td)
+  // TDesign Descriptions 单元格：标签 .t-descriptions__label，内容是 td
+  // / TDesign Descriptions cells: label .t-descriptions__label, value is td
+  .time, .content > :global(.t-typography), :global(.t-descriptions__label), :global(.t-descriptions__body td)
     font-size 12px
     font-weight 400
-    color var(--semi-color-text-2)
+    color var(--td-text-color-placeholder)
     padding 0
     line-height 20px
 
-  :global(.semi-descriptions-item-td)
-    color var(--semi-color-text-1)
+  :global(.t-descriptions__body td:not(.t-descriptions__label))
+    color var(--td-text-color-secondary)
     padding-left 6px
 
   .content
     height 48px
 
   &-skeleton
-    // Semi Skeleton.Paragraph 的占位行 = .semi-skeleton-paragraph 下的 li
-    // / Semi Skeleton.Paragraph placeholder rows = li inside .semi-skeleton-paragraph
-    :global(.semi-skeleton-paragraph > li:not(:last-child))
+    // TDesign Skeleton 的占位行 = .t-skeleton__row
+    // / TDesign Skeleton placeholder rows = .t-skeleton__row
+    :global(.t-skeleton__row:not(:last-child))
       height 14px
       margin-bottom 8px
 
@@ -89,10 +89,10 @@
 
   .description
     margin-top 16px
-    color var(--semi-color-text-2)
+    color var(--td-text-color-placeholder)
     font-weight 400
 
-  // Semi Card 卡体 / Semi card body
-  :global(.semi-card-body)
+  // TDesign Card 卡体 / TDesign card body
+  :global(.t-card__body)
     padding-top 52px
     padding-bottom 64px

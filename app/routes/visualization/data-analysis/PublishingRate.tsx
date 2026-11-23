@@ -1,12 +1,10 @@
-import { Card, Spin, Typography } from '@douyinfe/semi-ui';
+import { Card, Loading, Typography } from 'tdesign-react';
 import { VChart } from '@visactor/react-vchart';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '~/store';
 import { useLoaderData, useNavigation } from 'react-router';
 import { makeSpec } from '~/commons/vchart';
 import type { DataAnalysisLoaderData } from './types';
-
-const { Title } = Typography;
 
 /** 内容发布比例:堆叠柱(按 name 堆叠分色)。 */
 export default function PublishingRate() {
@@ -37,12 +35,12 @@ export default function PublishingRate() {
 
   return (
     <Card bordered={false} className="w-full">
-      <Title heading={5}>{t('dataAnalysis.title.publishingRate')}</Title>
-      <Spin spinning={loading} className="w-full">
+      <Typography.Title level="h5">{t('dataAnalysis.title.publishingRate')}</Typography.Title>
+      <Loading loading={loading} className="w-full">
         <div className="w-full h-[378px]">
           <VChart spec={config} />
         </div>
-      </Spin>
+      </Loading>
     </Card>
   );
 }

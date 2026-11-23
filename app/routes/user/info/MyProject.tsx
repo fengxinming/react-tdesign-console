@@ -1,38 +1,34 @@
-import { Row, Col, Card, Avatar, AvatarGroup, Typography, Skeleton } from '@douyinfe/semi-ui';
+import { Avatar, Card, Col, Row, Skeleton, Typography } from 'tdesign-react';
 import { useProjectsQuery } from '~/hooks/api/useUser';
 import type { ProjectItem } from '~/api/types';
 import type { ProjectCardProps } from './types';
 import styles from './style.module.styl';
 
-const { Text, Title } = Typography;
-
 function ProjectCard(props: ProjectCardProps) {
   const { loading, contributors, title, enTitle, contributorsLength } = props;
 
-  // Semi Card 用 bordered 控制边框，裸 bordered（等价 true）即为带边框卡片
-  // / Semi Card uses `bordered` to control the border; a bare `bordered` (equivalent to true) renders a bordered card
   return (
-    <Card bordered className={styles['project-wrapper']}>
-      <Skeleton loading={loading} active placeholder={<Skeleton.Paragraph rows={1} />}>
-        <Title heading={5}>{title}</Title>
+    <Card className={styles['project-wrapper']}>
+      <Skeleton loading={loading} animation="gradient" rowCol={[1]}>
+        <Typography.Title level="h5">{title}</Typography.Title>
       </Skeleton>
 
-      <Skeleton loading={loading} active placeholder={<Skeleton.Paragraph rows={1} />}>
-        <Text ellipsis className="!m-0">
+      <Skeleton loading={loading} animation="gradient" rowCol={[1]}>
+        <Typography.Text ellipsis={{ expandable: false }} className="!m-0">
           {enTitle}
-        </Text>
+        </Typography.Text>
       </Skeleton>
 
       <div className="mt-[22px]">
-        <Skeleton loading={loading} active placeholder={<Skeleton.Paragraph rows={1} />}>
-          <AvatarGroup size="extra-small">
+        <Skeleton loading={loading} animation="gradient" rowCol={[1]}>
+          <Avatar.Group size="small">
             {(contributors ?? []).map((item) => (
-              <Avatar key={item.avatar}>
-                <img src={item.avatar} alt={item.name} />
-              </Avatar>
+              <Avatar key={item.avatar} image={item.avatar} />
             ))}
-          </AvatarGroup>
-          <Text type="secondary">等{(contributorsLength ?? 0).toLocaleString()}人</Text>
+          </Avatar.Group>
+          <Typography.Text theme="secondary">
+            等{(contributorsLength ?? 0).toLocaleString()}人
+          </Typography.Text>
         </Skeleton>
       </div>
     </Card>
@@ -48,7 +44,7 @@ export default function MyProject() {
       {list.map((item: ProjectItem, index) => (
         <Col
           key={item.title || index}
-          span={8}
+          xs={12} sm={6} md={4}
           className={index > list.length - 4 && index < list.length ? 'mt-[16px]' : undefined}
         >
           <ProjectCard {...item} loading={loading} />

@@ -1,9 +1,9 @@
 .navbar
   display flex
   justify-content space-between
-  border-bottom 1px solid var(--semi-color-border)
+  border-bottom 1px solid var(--td-component-stroke)
   box-sizing border-box
-  background-color var(--semi-color-bg-0)
+  background-color var(--td-bg-color-container)
   height 100%
   width 100%
 
@@ -21,7 +21,7 @@
   box-sizing border-box
 
 .logo-name
-  color var(--semi-color-text-0)
+  color var(--td-text-color-primary)
   font-weight 500
   font-size 20px
   margin-left 10px
@@ -37,12 +37,12 @@
   height 32px
   border-radius 4px
   cursor pointer
-  color var(--semi-color-text-1)
+  color var(--td-text-color-secondary)
   margin-left 20px
 
   &:hover
-    background var(--semi-color-fill-1)
-    color var(--semi-color-primary)
+    background var(--td-bg-color-secondarycontainer)
+    color var(--td-brand-color)
 
 .username
   cursor pointer
@@ -64,46 +64,45 @@
 
   a
     text-decoration none
-    color var(--semi-color-text-0)
+    color var(--td-text-color-primary)
 
 .menu-wide
   width 640px
 
 .icon-button
   font-size 16px
-  border 1px solid var(--semi-color-border)
 
   > svg
     vertical-align -3px
 
-// 消息浮层：外框（背景/圆角/阴影）由 Semi Popover 容器提供，这里只负责尺寸与滚动，
+// 消息浮层：外框（背景/圆角/阴影）由 TDesign Popup 容器提供，这里只负责尺寸与滚动，
 // 否则会形成内外两层框，中间多出一圈空白
-// / Notice popup: the outer frame (background/radius/shadow) comes from Semi's Popover container;
+// / Notice popup: the outer frame (background/radius/shadow) comes from TDesign's Popup container;
 // this only handles size and scrolling, otherwise you get a double frame with a blank gutter.
 .notice-panel
   width 400px
   max-height 800px
   overflow-y auto
 
-  // Semi Tabs：头部导航 .semi-tabs-bar，面板区 .semi-tabs-content
-  // / Semi Tabs: header bar .semi-tabs-bar, panel area .semi-tabs-content
-  :global(.semi-tabs-bar)
+  // TDesign Tabs：头部导航 .t-tabs__header，面板区 .t-tabs__content
+  // / TDesign Tabs: header bar .t-tabs__header, panel area .t-tabs__content
+  :global(.t-tabs__header)
     padding 8px 16px
     // 清掉 Tabs 自带的下外边距，否则标签分隔线与列表之间会空出一条
     // / clear Tabs' default bottom margin, which would leave a gap above the list
     margin 0
 
-  :global(.semi-tabs-content)
+  :global(.t-tabs__content)
     padding-top 0
 
-  // 列表项左右留白与 Tabs 的 16px 对齐（Semi List 默认内边距不同，
+  // 列表项左右留白与 Tabs 的 16px 对齐（TDesign List 默认内边距不同，
   // 这里显式写出来，避免 token 变化后内容贴到弹层边缘）
   // / Align the list item's horizontal padding with the Tabs' 16px
-  :global(.semi-list-item)
+  :global(.t-list-item)
     padding 12px 16px
 
-    // Semi List 默认带 hover 底色与末项分隔线，这里还原成原视觉
-    // / Semi List ships a hover background and a trailing divider by default; revert both
+    // TDesign List 默认带 hover 底色与末项分隔线，这里还原成原视觉
+    // / TDesign List ships a hover background and a trailing divider by default; revert both
     &:hover
       background-color transparent
 
@@ -130,17 +129,17 @@
 .notice-empty
   padding 24px 0
   text-align center
-  color var(--semi-color-text-2)
+  color var(--td-text-color-placeholder)
 
 .notice-content
   white-space nowrap
   overflow hidden
   text-overflow ellipsis
-  color var(--semi-color-text-1)
+  color var(--td-text-color-secondary)
   font-size 13px
 
-// 弹层底部操作区（Semi List 无 footer 插槽，单独渲染）
-// / Popup footer actions (Semi List has no footer slot, so it is rendered separately)
+// 弹层底部操作区（TDesign List 无 footer 插槽，单独渲染）
+// / Popup footer actions (TDesign List has no footer slot, so it is rendered separately)
 .notice-footer
   display flex
   padding 12px 0
@@ -151,14 +150,15 @@
   width 50%
 
   &:first-child
-    border-right 1px solid var(--semi-color-border)
+    border-right 1px solid var(--td-component-stroke)
 
-// 搜索框：className 直接落在 Semi Input 的根节点上（即 .semi-input-wrapper），
+// 搜索框：className 直接落在 TDesign Input 的根节点上（即 .t-input），
 // 因此背景与圆角写在 .search-box 自身
-// / search input: className lands on Semi Input's root (.semi-input-wrapper), so the
+// / search input: className lands on TDesign Input's root (.t-input), so the
 // background/radius go on .search-box itself
 .search-box
-  background-color var(--semi-color-fill-1)
+  width 205px
+  background-color var(--td-bg-color-secondarycontainer)
   border-radius 16px
 
   svg
@@ -170,12 +170,12 @@
   cursor pointer
 
   &:hover
-    background var(--semi-color-fill-1)
+    background var(--td-bg-color-secondarycontainer)
 
 .search-empty
   padding 24px 0
   text-align center
-  color var(--semi-color-text-2)
+  color var(--td-text-color-placeholder)
 
 .dropdown-icon
   margin-right 8px
@@ -185,3 +185,15 @@
 @media (max-width: 768px)
   .logo-name
     display none
+
+  .right
+    padding-right 8px
+
+    .search-wrapper,
+    .lang-wrapper,
+    .fullscreen-wrapper,
+    .github-wrapper
+      display none
+
+    li
+      padding 0 4px

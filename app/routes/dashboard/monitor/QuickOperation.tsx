@@ -1,5 +1,5 @@
-import { Button, Card, Typography, Space } from '@douyinfe/semi-ui';
-import { IconArrowRight, IconStop, IconSync, IconPriceTag } from '@douyinfe/semi-icons';
+import { Button, Card, Space, Typography } from 'tdesign-react';
+import { ArrowRightIcon, StopIcon, RefreshIcon, TagIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 
 export default function QuickOperation() {
@@ -7,18 +7,18 @@ export default function QuickOperation() {
 
   return (
     <Card bordered={false}>
-      <Typography.Title heading={5}>{t('monitor.title.quickOperation')}</Typography.Title>
-      <Space vertical className="w-full" spacing={10} style={{ alignItems: 'stretch' }}>
-        <Button block icon={<IconPriceTag />}>
+      <Typography.Title level="h5">{t('monitor.title.quickOperation')}</Typography.Title>
+      <Space direction="vertical" size={10} className="w-full" style={{ alignItems: 'stretch' }}>
+        <Button block theme="default" variant="outline" icon={<TagIcon />}>
           {t('monitor.quickOperation.changeClarity')}
         </Button>
-        <Button block icon={<IconSync />}>
+        <Button block theme="default" variant="outline" icon={<RefreshIcon />}>
           {t('monitor.quickOperation.switchStream')}
         </Button>
-        <Button block icon={<IconStop />}>
+        <Button block theme="default" variant="outline" icon={<StopIcon />}>
           {t('monitor.quickOperation.removeClarity')}
         </Button>
-        <Button block icon={<IconArrowRight />}>
+        <Button block theme="default" variant="outline" icon={<ArrowRightIcon />}>
           {t('monitor.quickOperation.pushFlowGasket')}
         </Button>
       </Space>

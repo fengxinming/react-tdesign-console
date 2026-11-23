@@ -4,8 +4,8 @@ const notices = [
   {
     id: "1",
     tab: "message",
-    name: "Semi",
-    content: "欢迎使用 Semi 控制台,新版本已上线。",
+    name: "TDesign",
+    content: "欢迎使用 TDesign 控制台,新版本已上线。",
     time: "2026-09-02 09:12",
     read: false,
     avatar: "",
@@ -86,7 +86,7 @@ const notices = [
 
 // 模拟新消息到达的内容池(不含 mockjs,纯 Math.random)
 const INCOMING_POOL = [
-  { tab: "message", name: "Semi", content: "您关注的看板有新的数据更新。" },
+  { tab: "message", name: "TDesign", content: "您关注的看板有新的数据更新。" },
   { tab: "message", name: "系统", content: "定时任务执行完成,详情请查看日志。" },
   { tab: "notice", name: "安全", content: "检测到新设备登录,请确认是否为本人操作。" },
   { tab: "notice", name: "运维", content: "服务器负载已恢复正常,可关注监控面板。" },

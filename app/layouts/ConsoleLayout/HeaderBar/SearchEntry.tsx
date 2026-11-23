@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Input, Modal } from '@douyinfe/semi-ui';
-import { IconSearch } from '@douyinfe/semi-icons';
+import { Dialog, Input } from 'tdesign-react';
+import { SearchIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { menuRoutes } from '~/config/menu';
 import type { SearchResult } from './types';
@@ -58,34 +58,31 @@ export default function SearchEntry() {
     navigate(key);
   };
 
-  // 只在点击时打开搜索弹窗。Modal 关闭时 rc-dialog 会把焦点还给触发元素，
-  // 若同时监听 onFocus，关闭后焦点回落会立刻再次打开弹窗（表现为点关闭没反应）。
-  // / Open the search modal on click only. rc-dialog restores focus to the trigger element when the
-  // modal closes, so an onFocus handler would reopen it right away (the close button looks dead).
+  // 只在点击时打开搜索弹窗，避免关闭后焦点回落再次触发。
   return (
     <>
       <Input
-        className={`${styles['search-box']}`}
+        className={styles['search-box']}
         placeholder={t('navbar.search.placeholder')}
-        showClear
+        clearable
         onClick={() => setSearchOpen(true)}
-        prefix={<IconSearch />}
+        prefixIcon={<SearchIcon />}
       />
-      <Modal
-        title={t('navbar.search.title')}
+      <Dialog
+        header={t('navbar.search.title')}
         visible={searchOpen}
-        footer={null}
-        onCancel={() => setSearchOpen(false)}
-        className="w-[520px]"
+        footer={false}
+        width={520}
+        onClose={() => setSearchOpen(false)}
       >
         <Input
-          showClear
-          autoFocus
+          clearable
+          autofocus
           placeholder={t('navbar.search.placeholder')}
           value={keyword}
-          onChange={(value) => setKeyword(value)}
+          onChange={(value) => setKeyword(String(value))}
           className="mb-[12px]"
-          prefix={<IconSearch />}
+          prefixIcon={<SearchIcon />}
         />
         <div className="max-h-[320px] overflow-auto">
           {searchResults.map((r) => (
@@ -97,7 +94,7 @@ export default function SearchEntry() {
             <div className={styles['search-empty']}>{t('common.empty')}</div>
           )}
         </div>
-      </Modal>
+      </Dialog>
     </>
   );
 }

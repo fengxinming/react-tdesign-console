@@ -1,13 +1,13 @@
 import {
-  IconAlertTriangle,
-  IconAppCenter,
-  IconApps,
-  IconEdit,
-  IconFile,
-  IconMenu,
-  IconSetting,
-  IconUser,
-} from '@douyinfe/semi-icons';
+  AppIcon,
+  ApplicationIcon,
+  EditIcon,
+  ErrorTriangleIcon,
+  FileIcon,
+  MenuIcon,
+  SettingIcon,
+  UserIcon,
+} from 'tdesign-icons-react';
 import type { MenuRoute } from './types';
 import Exception500 from '~/components/500';
 
@@ -15,7 +15,7 @@ export const menuRoutes: MenuRoute[] = [
   {
     path: '/dashboard',
     name: 'menu.dashboard',
-    icon: <IconAppCenter />,
+    icon: <AppIcon />,
     children: [
       {
         path: '/dashboard/workplace',
@@ -33,7 +33,7 @@ export const menuRoutes: MenuRoute[] = [
   {
     path: '/visualization',
     name: 'menu.visualization',
-    icon: <IconApps />,
+    icon: <ApplicationIcon />,
     children: [
       {
         path: '/visualization/data-analysis',
@@ -55,7 +55,7 @@ export const menuRoutes: MenuRoute[] = [
   {
     path: '/list',
     name: 'menu.list',
-    icon: <IconMenu />,
+    icon: <MenuIcon />,
     children: [
       {
         path: '/list/search-table',
@@ -68,7 +68,7 @@ export const menuRoutes: MenuRoute[] = [
   {
     path: '/form',
     name: 'menu.form',
-    icon: <IconEdit />,
+    icon: <EditIcon />,
     children: [
       {
         path: '/form/group',
@@ -87,7 +87,7 @@ export const menuRoutes: MenuRoute[] = [
   {
     path: '/profile',
     name: 'menu.profile',
-    icon: <IconUser />,
+    icon: <UserIcon />,
     children: [
       {
         path: '/profile/basic',
@@ -99,7 +99,7 @@ export const menuRoutes: MenuRoute[] = [
   {
     path: '/result',
     name: 'menu.result',
-    icon: <IconFile />,
+    icon: <FileIcon />,
     children: [
       {
         path: '/result/success',
@@ -112,7 +112,7 @@ export const menuRoutes: MenuRoute[] = [
   {
     path: '/exception',
     name: 'menu.exception',
-    icon: <IconAlertTriangle />,
+    icon: <ErrorTriangleIcon />,
 
     children: [
       // {
@@ -135,7 +135,7 @@ export const menuRoutes: MenuRoute[] = [
   {
     path: '/user',
     name: 'menu.user',
-    icon: <IconSetting />,
+    icon: <SettingIcon />,
     children: [
       { path: '/user/info', name: 'menu.user.info', view: 'routes/user/info/index.tsx' },
       { path: '/user/setting', name: 'menu.user.setting', view: 'routes/user/setting/index.tsx' },

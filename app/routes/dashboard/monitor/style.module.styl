@@ -1,9 +1,9 @@
 .studio
   // 原规则 `&-wrapper :global(.xxx-card-body)` 企图去掉卡体顶部内边距，但卡体是 .studio-wrapper
-  // 的祖先而非后代，该规则一直是死代码；Semi 卡体默认 20px 内边距的观感正确，因此不再保留。
+  // 的祖先而非后代，该规则一直是死代码；TDesign 卡体默认内边距的观感正确，因此不再保留。
   // / The old `&-wrapper :global(.xxx-card-body)` rule tried to remove the card body's top padding,
   // but the card body is the ancestor of .studio-wrapper, not a descendant, so it was always dead
-  // code. Semi's default 20px card body padding renders correctly, so the rule stays dropped.
+  // code. TDesign's default card body padding renders correctly, so the rule stays dropped.
 
   &-preview
     width 100%
@@ -14,15 +14,12 @@
 .chat-panel
   height 100%
 
-  // Semi Card 卡体：撑满高度并纵向排列 / Semi card body: full height, column layout
-  :global(.semi-card-body)
+  // TDesign Card 卡体：撑满高度并纵向排列
+  // / TDesign card body: full height, column layout
+  :global(.t-card__body)
     height 100%
     display flex
     flex-direction column
-
-  h6
-    margin-top 0
-    margin-bottom 16px
 
 .message-item
   font-size 12px
@@ -37,7 +34,7 @@
     &-item
       margin-right 4px
       font-size 14px
-      color var(--semi-color-text-2)
+      color var(--td-text-color-placeholder)
       width 20px
       height 20px
       border-radius 50%
@@ -47,17 +44,17 @@
       cursor pointer
 
       &:hover
-        background-color var(--semi-color-fill-0)
+        background-color var(--td-bg-color-container-hover)
 
       &:last-child
         margin-right 0
 
   &-collected
     .message-item-actions-collect
-      color var(--semi-color-warning)
+      color var(--td-warning-color)
 
   &:hover
-    background-color var(--semi-color-fill-1)
+    background-color var(--td-bg-color-secondarycontainer)
 
     .message-item-actions
       opacity 1

@@ -1,12 +1,10 @@
-import { Card, Typography, Spin } from '@douyinfe/semi-ui';
+import { Card, Loading, Typography } from 'tdesign-react';
 import { VChart } from '@visactor/react-vchart';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '~/store';
 import { useLoaderData, useNavigation } from 'react-router';
 import { makeSpec } from '~/commons/vchart';
 import type { DataAnalysisLoaderData } from './types';
-
-const { Title } = Typography;
 
 export default function PeriodLine() {
   const { t } = useTranslation();
@@ -36,12 +34,12 @@ export default function PeriodLine() {
 
   return (
     <Card bordered={false}>
-      <Title heading={5}>{t('dataAnalysis.title.publishingTiming')}</Title>
-      <Spin spinning={loading} className="w-full">
+      <Typography.Title level="h5">{t('dataAnalysis.title.publishingTiming')}</Typography.Title>
+      <Loading loading={loading} className="w-full">
         <div className="w-full h-[370px]">
           <VChart spec={config} />
         </div>
-      </Spin>
+      </Loading>
     </Card>
   );
 }

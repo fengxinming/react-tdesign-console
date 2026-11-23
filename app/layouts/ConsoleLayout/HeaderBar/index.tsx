@@ -16,10 +16,10 @@ export default function HeaderBar() {
         <Logo />
       </div>
       <ul className={styles.right}>
-        <li>
+        <li className={styles['search-wrapper']}>
           <SearchEntry />
         </li>
-        <li>
+        <li className={styles['lang-wrapper']}>
           <LanguageSwitch />
         </li>
         <li>
@@ -28,13 +28,13 @@ export default function HeaderBar() {
         <li>
           <ThemeToggle />
         </li>
-        <li>
+        <li className={styles['fullscreen-wrapper']}>
           <FullscreenToggle />
         </li>
         <li>
           <SettingButton />
         </li>
-        <li>
+        <li className={styles['github-wrapper']}>
           <GithubLink />
         </li>
         <li>

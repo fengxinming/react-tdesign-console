@@ -1,16 +1,15 @@
 import {
-  Banner,
+  Alert,
   Button,
   Divider,
+  Drawer,
   InputNumber,
-  Radio,
+  MessagePlugin,
   RadioGroup,
-  SideSheet,
   Space,
   Switch,
-  Toast,
-} from '@douyinfe/semi-ui';
-import { IconSetting } from '@douyinfe/semi-icons';
+} from 'tdesign-react';
+import { SettingIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import type { NavMode } from '~/store/types';
 import { useSettingsStore } from '~/store';
@@ -51,31 +50,29 @@ export default function SettingDrawer({ visible, onClose }: SettingDrawerProps) 
       navMode,
     };
     void navigator.clipboard?.writeText(JSON.stringify(config, null, 2));
-    Toast.success({ content: t('settings.copySettings.message') });
+    void MessagePlugin.success(t('settings.copySettings.message'));
   };
 
+  const navModeOptions = [
+    { label: t('settings.navMode.inline'), value: 'inline' },
+    { label: t('settings.navMode.horizontal'), value: 'horizontal' },
+  ];
+
   return (
-    <SideSheet
-      // Semi SideSheet 的 width 同名，直接传数值宽度 / SideSheet keeps `width` (accepts a number)
-      width={300}
-      title={
+    <Drawer
+      size="300px"
+      header={
         <span className="flex items-center gap-[8px]">
-          <IconSetting />
+          <SettingIcon />
           {t('settings.title')}
         </span>
       }
       visible={visible}
-      onCancel={onClose}
-      // 设置抽屉的操作按钮放在 **底部 footer**；
-      // 避免放进 header 的 extra（会跑到顶部并挤得标题折行）。
-      // / Place the drawer actions in the **bottom footer**;
-      // avoid the header `extra` slot, which would put them on top and squeeze the title.
+      onClose={onClose}
       footer={
         <Space>
-          <Button type="secondary" onClick={onClose}>
-            {t('settings.close')}
-          </Button>
-          <Button type="primary" theme="solid" onClick={copyConfig}>
+          <Button onClick={onClose}>{t('settings.close')}</Button>
+          <Button theme="primary" onClick={copyConfig}>
             {t('settings.copySettings')}
           </Button>
         </Space>
@@ -91,30 +88,45 @@ export default function SettingDrawer({ visible, onClose }: SettingDrawerProps) 
         <label className="text-[14px] font-medium mb-[8px]">{t('settings.content')}</label>
         <Row label={t('settings.navMode')}>
           <RadioGroup
-            type="button"
-            buttonSize="small"
+            theme="button"
+            size="small"
+            options={navModeOptions}
             value={navMode}
-            onChange={(e) => setSettings({ navMode: e.target.value as NavMode })}
-          >
-            <Radio value="inline">{t('settings.navMode.inline')}</Radio>
-            <Radio value="horizontal">{t('settings.navMode.horizontal')}</Radio>
-          </RadioGroup>
+            onChange={(value) => setSettings({ navMode: value as NavMode })}
+          />
         </Row>
         <Row label={t('settings.navbar')}>
-          <Switch size="small" checked={navbar} onChange={(v) => setSettings({ navbar: v })} />
+          <Switch
+            size="small"
+            value={navbar}
+            onChange={(value) => setSettings({ navbar: Boolean(value) })}
+          />
         </Row>
         <Row label={t('settings.menu')}>
-          <Switch size="small" checked={menu} onChange={(v) => setSettings({ menu: v })} />
+          <Switch
+            size="small"
+            value={menu}
+            onChange={(value) => setSettings({ menu: Boolean(value) })}
+          />
         </Row>
         <Row label={t('settings.footer')}>
-          <Switch size="small" checked={footer} onChange={(v) => setSettings({ footer: v })} />
+          <Switch
+            size="small"
+            value={footer}
+            onChange={(value) => setSettings({ footer: Boolean(value) })}
+          />
         </Row>
         <Row label={t('settings.menuWidth')}>
           <InputNumber
-            className="!w-[80px]"
+            theme="normal"
+            style={{ width: 96 }}
             size="small"
             value={menuWidth}
-            onChange={(v) => v !== '' && v != null && setSettings({ menuWidth: Number(v) })}
+            onChange={(value) => {
+              if (value !== null && value !== undefined && String(value) !== '') {
+                setSettings({ menuWidth: Number(value) });
+              }
+            }}
           />
         </Row>
         <Divider />
@@ -125,14 +137,14 @@ export default function SettingDrawer({ visible, onClose }: SettingDrawerProps) 
         <Row label={t('settings.colorWeak')}>
           <Switch
             size="small"
-            checked={colorWeak}
-            onChange={(v) => setSettings({ colorWeak: v })}
+            value={colorWeak}
+            onChange={(value) => setSettings({ colorWeak: Boolean(value) })}
           />
         </Row>
         <Divider />
       </div>
 
-      <Banner type="info" description={t('settings.alertContent')} className="mt-[8px]" />
-    </SideSheet>
+      <Alert theme="info" message={t('settings.alertContent')} className="mt-[8px]" />
+    </Drawer>
   );
 }

@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- CSS 层顺序：base(含 Tailwind Preflight) < Semi < components < utilities。
-         必须先于任何样式声明，保证原子类能覆盖 Semi 组件、Preflight 不冲掉 Semi 样式。 -->
+    <!-- CSS 层顺序：base(含 Tailwind Preflight) < TDesign < components < utilities。
+         必须先于任何样式声明，保证原子类能覆盖组件样式、Preflight 不冲掉组件样式。 -->
     <style>
-      @layer theme, base, semi, components, utilities;
+      @layer theme, base, tdesign, components, utilities;
     </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <title>React Semi Console</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <title>React TDesign Console</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

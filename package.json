@@ -1,15 +1,15 @@
 {
-  "name": "react-semi-console",
+  "name": "react-tdesign-console",
   "version": "1.0.0",
   "private": true,
-  "description": "基于 React 19 + React Router 8（Library 模式，纯客户端 SPA）+ Semi Design 的中后台管理模板",
-  "homepage": "https://github.com/fengxinming/react-semi-console#readme",
+  "description": "基于 React 19 + React Router 8（Library 模式，纯客户端 SPA）+ TDesign React 的中后台管理模板",
+  "homepage": "https://github.com/fengxinming/react-tdesign-console#readme",
   "bugs": {
-    "url": "https://github.com/fengxinming/react-semi-console/issues"
+    "url": "https://github.com/fengxinming/react-tdesign-console/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fengxinming/react-semi-console.git"
+    "url": "git+https://github.com/fengxinming/react-tdesign-console.git"
   },
   "license": "MIT",
   "author": "Jesse Feng <fxm0016@126.com>",
@@ -26,8 +26,6 @@
   },
   "dependencies": {
     "@ant-design/colors": "^8.0.1",
-    "@douyinfe/semi-icons": "^2.105.0",
-    "@douyinfe/semi-ui": "^2.105.0",
     "@tanstack/react-query": "^5.102.8",
     "@visactor/react-vchart": "2.2.2",
     "axios": "^1.20.0",
@@ -41,10 +39,11 @@
     "react-router": "^8",
     "react-transition-group": "^4.4.5",
     "screenfull": "^6.0.2",
+    "tdesign-icons-react": "0.6.12",
+    "tdesign-react": "1.18.6",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@douyinfe/semi-vite-plugin": "^2.105.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^22",
     "@types/nprogress": "^0.2.3",

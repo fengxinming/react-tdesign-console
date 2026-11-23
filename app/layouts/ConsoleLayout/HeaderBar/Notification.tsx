@@ -1,17 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  Avatar,
-  Badge,
-  Button,
-  Empty,
-  List,
-  Popover,
-  Tabs,
-  Tag,
-  Typography,
-} from '@douyinfe/semi-ui';
-import { IconBell } from '@douyinfe/semi-icons';
+import { Avatar, Badge, Button, Empty, List, Popup, Tabs, Tag, Typography } from 'tdesign-react';
+import { NotificationIcon } from 'tdesign-icons-react';
 import { useTranslation } from 'react-i18next';
 import { useNoticesQuery, useMarkRead } from '~/hooks/api/useNotice';
 import IconButton from './IconButton';
@@ -58,21 +48,20 @@ export default function Notification() {
   const markAllRead = () => markReadMutate(undefined);
   const markRead = (id: string) => markReadMutate(id);
 
-  // Semi Tabs 用 tabList（itemKey/tab）+ children TabPane，无 items prop
   const tabList = TABS.map((tab) => {
     const count = unreadByTab.get(tab.key) ?? 0;
     return {
-      itemKey: tab.key,
-      tab: count > 0 ? `${t(tab.label)} (${count})` : t(tab.label),
+      value: tab.key,
+      label: count > 0 ? `${t(tab.label)} (${count})` : t(tab.label),
     };
   });
 
   const NotificationPopup = (
     <div className={styles['notice-panel']}>
       <Tabs
-        activeKey={noticeTab}
-        onChange={(k) => setNoticeTab(k as NoticeTab)}
-        tabList={tabList}
+        value={noticeTab}
+        onChange={(value) => setNoticeTab(String(value) as NoticeTab)}
+        list={tabList}
       />
       {currentTabNotices.length === 0 ? (
         <div className={styles['notice-empty']}>
@@ -80,55 +69,54 @@ export default function Notification() {
         </div>
       ) : (
         <>
-          {/* Semi List 用 dataSource + renderItem，无 Listy/List.Item.Meta；两栏布局自己拼装 */}
-          <List
-            dataSource={currentTabNotices}
-            renderItem={(n) => (
-              <List.Item
-                className={styles['notice-item']}
-                style={{ opacity: n.read ? 0.5 : 1 }}
-                onClick={() => {
-                  if (!n.read) {
-                    markRead(n.id);
-                  }
-                }}
-              >
-                <Avatar shape="circle" size="medium">
-                  {n.avatar ? <img src={n.avatar} alt={n.name} /> : (n.name?.[0] ?? '?')}
+          <List split={false}>
+            {currentTabNotices.map((n) => (
+              <List.ListItem key={n.id}>
+                <div
+                  className={styles['notice-item']}
+                  style={{ opacity: n.read ? 0.5 : 1 }}
+                  onClick={() => {
+                    if (!n.read) {
+                      markRead(n.id);
+                    }
+                  }}
+                >
+                <Avatar
+                  shape="circle"
+                  size="medium"
+                  image={n.avatar || undefined}
+                  alt={n.name}
+                >
+                  {n.name?.[0] ?? '?'}
                 </Avatar>
                 <div className={styles['notice-item-content']}>
                   <div className={styles['notice-item-title']}>
                     <div className="flex justify-between items-center">
                       <span>{n.name}</span>
-                      {!n.read && <Tag color="blue">{t('navbar.notice.unread')}</Tag>}
+                      {!n.read && (
+                        <Tag theme="primary" variant="light">
+                          {t('navbar.notice.unread')}
+                        </Tag>
+                      )}
                     </div>
                   </div>
                   <div className={styles['notice-content']}>{n.content}</div>
-                  <Typography.Text type="secondary" className="text-[12px]">
+                  <Typography.Text theme="secondary" className="text-[12px]">
                     {n.time}
                   </Typography.Text>
+                  </div>
                 </div>
-              </List.Item>
-            )}
-          />
+              </List.ListItem>
+            ))}
+          </List>
           <div className={styles['notice-footer']}>
             <div className={styles['notice-footer-item']}>
-              <Button
-                theme="borderless"
-                type="tertiary"
-                size="small"
-                onClick={() => void markAllRead()}
-              >
+              <Button variant="text" size="small" onClick={() => void markAllRead()}>
                 {t('navbar.notice.readAll')}
               </Button>
             </div>
             <div className={styles['notice-footer-item']}>
-              <Button
-                theme="borderless"
-                type="tertiary"
-                size="small"
-                onClick={() => navigate('/dashboard/workplace')}
-              >
+              <Button variant="text" size="small" onClick={() => navigate('/dashboard/workplace')}>
                 {t('navbar.notice.more')}
               </Button>
             </div>
@@ -139,19 +127,19 @@ export default function Notification() {
   );
 
   return (
-    <Popover
+    <Popup
       trigger="hover"
       content={NotificationPopup}
-      position="bottomRight"
+      placement="bottom-right"
       onVisibleChange={(visible) => {
         if (visible) {
           refetch();
         }
       }}
     >
-      <Badge count={unread} dot type="danger">
-        <IconButton icon={<IconBell />} />
+      <Badge count={unread} dot>
+        <IconButton icon={<NotificationIcon />} />
       </Badge>
-    </Popover>
+    </Popup>
   );
 }
